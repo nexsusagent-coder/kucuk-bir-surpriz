@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0d090c">
+<title>Küçük Bir Sürpriz</title>
+<style>
+:root{
+  --cream:#fff7f0;
+  --soft:rgba(255,247,240,.70);
+  --muted:rgba(255,247,240,.46);
+  --rose:#efb5c2;
+}
+*{box-sizing:border-box}
+html,body{
+  margin:0;width:100%;height:100%;overflow:hidden;
+  background:#0d090c;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  color:var(--cream)
+}
+body{
+  display:grid;place-items:center;position:relative;isolation:isolate;
+  background:
+    radial-gradient(900px 680px at 14% 8%,rgba(239,181,194,.16),transparent 44%),
+    radial-gradient(900px 700px at 86% 90%,rgba(244,204,163,.11),transparent 44%),
+    linear-gradient(145deg,#0b080a 0%,#1c1117 50%,#0b080a 100%)
+}
+body:before{
+  content:"";position:fixed;inset:-35%;z-index:-2;pointer-events:none;
+  background:conic-gradient(from 0deg,transparent,rgba(239,181,194,.08),transparent,rgba(244,204,163,.06),transparent);
+  filter:blur(85px);animation:bgturn 24s linear infinite
+}
+body:after{
+  content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.07;mix-blend-mode:soft-light;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='170' height='170'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.88' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.42'/%3E%3C/svg%3E")
+}
+@keyframes bgturn{to{transform:rotate(360deg)}}
+
+#open{position:absolute;opacity:0;pointer-events:none}
+
+.wrap{width:min(92vw,680px);padding:12px}
+.card{
+  position:relative;min-height:540px;border-radius:32px;overflow:hidden;
+  border:1px solid rgba(255,255,255,.10);
+  background:linear-gradient(180deg,rgba(255,255,255,.075),rgba(255,255,255,.03));
+  box-shadow:0 30px 100px rgba(0,0,0,.48),inset 0 1px 0 rgba(255,255,255,.05);
+  backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px)
+}
+.card:before{
+  content:"";position:absolute;inset:-25%;pointer-events:none;
+  background:radial-gradient(circle at 50% 30%,rgba(255,255,255,.055),transparent 19%);
+  animation:breathe 6s ease-in-out infinite
+}
+@keyframes breathe{50%{transform:scale(1.08);opacity:.72}}
+
+.screen{
+  position:absolute;inset:0;padding:34px 26px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center
+}
+.intro{
+  opacity:1;transform:none;
+  transition:opacity .7s ease,transform .8s cubic-bezier(.16,1,.3,1);
+  z-index:5
+}
+#open:checked ~ .wrap .intro{
+  opacity:0;transform:scale(.965);pointer-events:none
+}
+.kicker{
+  font-size:11px;letter-spacing:.29em;text-transform:uppercase;color:var(--muted);
+  margin-bottom:20px
+}
+.intro h1{
+  margin:0 0 14px;font-size:clamp(34px,8.8vw,58px);
+  line-height:.98;letter-spacing:-.055em;font-weight:720;max-width:9ch;text-wrap:balance
+}
+.intro p{margin:0 0 28px;color:var(--soft);font-size:15px}
+.open-btn{
+  border:1px solid rgba(255,255,255,.14);
+  background:rgba(255,255,255,.07);
+  color:var(--cream);
+  padding:14px 25px;border-radius:999px;
+  font-size:14px;cursor:pointer;
+  box-shadow:0 15px 30px rgba(0,0,0,.18);
+  user-select:none;-webkit-tap-highlight-color:transparent
+}
+.open-btn:active{transform:scale(.97)}
+
+.sequence{z-index:3;pointer-events:none}
+.step{
+  position:absolute;inset:0;padding:34px 28px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
+  opacity:0;transform:translateY(18px) scale(.99);
+  pointer-events:none
+}
+.rule{
+  width:74px;height:1px;margin:0 auto 24px;
+  background:linear-gradient(90deg,transparent,var(--rose),transparent)
+}
+.phrase{
+  margin:0;font-size:clamp(30px,7vw,48px);line-height:1.06;
+  letter-spacing:-.045em;font-weight:650;max-width:11ch;text-wrap:balance
+}
+.accent{
+  font-family:Georgia,"Times New Roman",serif;font-style:italic;font-weight:400;
+  color:transparent;
+  background:linear-gradient(90deg,#fff8f1,#ffd9c8 48%,#efb5c2);
+  -webkit-background-clip:text;background-clip:text
+}
+.big{
+  margin:0;font-size:clamp(43px,10.3vw,76px);line-height:.98;
+  letter-spacing:-.065em;font-weight:760;max-width:8.8ch;text-wrap:balance
+}
+.big .line{display:block;overflow:hidden;padding:.03em 0}
+.big .line span{display:inline-block}
+.signature{margin-top:26px;font-size:14px;color:rgba(255,247,240,.58)}
+
+/* All progression is CSS-only, so it also works in browsers that block page JavaScript. */
+#open:checked ~ .wrap .step1{animation:s1 3.0s ease .45s both}
+#open:checked ~ .wrap .step2{animation:s2 3.0s ease 3.05s both}
+#open:checked ~ .wrap .step3{animation:s3 .95s cubic-bezier(.16,1,.3,1) 5.85s forwards}
+
+@keyframes s1{
+  0%{opacity:0;transform:translateY(18px) scale(.99)}
+  18%,72%{opacity:1;transform:none}
+  100%{opacity:0;transform:translateY(-12px) scale(.99)}
+}
+@keyframes s2{
+  0%{opacity:0;transform:translateY(18px) scale(.99)}
+  18%,72%{opacity:1;transform:none}
+  100%{opacity:0;transform:translateY(-12px) scale(.99)}
+}
+@keyframes s3{
+  from{opacity:0;transform:translateY(18px) scale(.99)}
+  to{opacity:1;transform:none}
+}
+
+/* Final line staging */
+#open:checked ~ .wrap .step3 .line:nth-child(1){animation:linein .8s cubic-bezier(.16,1,.3,1) 6.20s both}
+#open:checked ~ .wrap .step3 .line:nth-child(2){animation:linein .85s cubic-bezier(.16,1,.3,1) 6.62s both}
+#open:checked ~ .wrap .step3 .line:nth-child(3){animation:linein .9s cubic-bezier(.16,1,.3,1) 7.05s both}
+#open:checked ~ .wrap .step3 .signature{animation:fadein .8s ease 7.75s both}
+
+@keyframes linein{
+  from{opacity:0;transform:translateY(18px)}
+  to{opacity:1;transform:none}
+}
+@keyframes fadein{
+  from{opacity:0;transform:translateY(8px)}
+  to{opacity:1;transform:none}
+}
+
+/* Quiet romantic floating lights, no JS */
+.spark{
+  position:absolute;width:5px;height:5px;border-radius:50%;
+  background:rgba(255,236,225,.52);opacity:0;pointer-events:none
+}
+.s1{left:22%;bottom:16%}.s2{left:38%;bottom:13%}.s3{left:63%;bottom:17%}.s4{left:76%;bottom:12%}
+#open:checked ~ .wrap .spark{animation:floatup 5.8s ease-out infinite}
+#open:checked ~ .wrap .s2{animation-delay:1.2s}
+#open:checked ~ .wrap .s3{animation-delay:2.1s}
+#open:checked ~ .wrap .s4{animation-delay:3.0s}
+@keyframes floatup{
+  0%{opacity:0;transform:translateY(12px) scale(.8)}
+  16%{opacity:.48}
+  100%{opacity:0;transform:translateY(-145px) translateX(16px) scale(1.12)}
+}
+
+@media(max-width:480px){
+  .wrap{padding:10px}.card{min-height:520px;border-radius:28px}
+  .screen,.step{padding:30px 22px}.big{max-width:8.4ch}
+}
+</style>
+</head>
+<body>
+<input type="checkbox" id="open">
+
+<div class="wrap">
+  <main class="card">
+    <span class="spark s1"></span>
+    <span class="spark s2"></span>
+    <span class="spark s3"></span>
+    <span class="spark s4"></span>
+
+    <section class="screen intro">
+      <div class="kicker">küçük bir sürpriz</div>
+      <h1>Sana bir şey bırakılmış.</h1>
+      <p>Merak ettiysen dokun.</p>
+      <label class="open-btn" for="open">Aç</label>
+    </section>
+
+    <section class="sequence">
+      <div class="step step1">
+        <div class="rule"></div>
+        <h2 class="phrase">
+          Bazen <span class="accent">ansızın gelen</span> küçük sürprizlerin bir sebebi vardır…
+        </h2>
+      </div>
+
+      <div class="step step2">
+        <div class="rule"></div>
+        <h2 class="phrase">
+          Sadece yüzünü biraz <span class="accent">güldürmek</span> için.
+        </h2>
+      </div>
+
+      <div class="step step3">
+        <div class="rule"></div>
+        <h2 class="big">
+          <span class="line"><span>Senden daha</span></span>
+          <span class="line"><span class="accent">tatlı değil…</span></span>
+          <span class="line"><span>ama idare et.</span></span>
+        </h2>
+        <div class="signature">Afiyet olsun.</div>
+      </div>
+    </section>
+  </main>
+</div>
+</body>
+</html>
