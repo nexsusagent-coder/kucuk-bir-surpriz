@@ -1,0 +1,827 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#24142f">
+<title>Küçük Bir Merak ✨</title>
+<style>
+:root{
+  --ink:#23172b;
+  --cream:#fffaf6;
+  --soft:#67596e;
+  --purple:#7a5cff;
+  --pink:#ff6fae;
+  --coral:#ff8d72;
+  --yellow:#ffd769;
+  --blue:#6bd7ff;
+  --mint:#79e6c3;
+  --lav:#c9b7ff;
+  --white:#fff;
+  --shadow:0 20px 60px rgba(41,24,56,.16);
+}
+*{box-sizing:border-box}
+html,body{
+  margin:0;
+  min-height:100%;
+  font-family:"Avenir Next","Trebuchet MS","Segoe UI",Arial,sans-serif;
+  color:var(--ink);
+}
+body{
+  min-height:100dvh;
+  overflow-x:hidden;
+  background:
+    radial-gradient(circle at 10% 8%, rgba(255,111,174,.28), transparent 26%),
+    radial-gradient(circle at 88% 14%, rgba(107,215,255,.26), transparent 25%),
+    radial-gradient(circle at 20% 90%, rgba(121,230,195,.26), transparent 26%),
+    radial-gradient(circle at 88% 88%, rgba(255,215,105,.25), transparent 25%),
+    linear-gradient(145deg,#fff7fb 0%,#f6f2ff 46%,#eefbff 100%);
+  position:relative;
+}
+body:before{
+  content:"";
+  position:fixed; inset:0; pointer-events:none; z-index:0;
+  background-image:
+    radial-gradient(circle, rgba(122,92,255,.10) 1.2px, transparent 1.2px);
+  background-size:24px 24px;
+  mask-image:linear-gradient(to bottom,rgba(0,0,0,.55),transparent 85%);
+}
+.floaty{
+  position:fixed; z-index:0; pointer-events:none; opacity:.5;
+  animation:floaty 8s ease-in-out infinite;
+  filter:drop-shadow(0 10px 18px rgba(0,0,0,.08));
+}
+.f1{left:4%;top:12%;font-size:30px}
+.f2{right:6%;top:20%;font-size:26px;animation-delay:-2s}
+.f3{left:7%;bottom:16%;font-size:28px;animation-delay:-4s}
+.f4{right:7%;bottom:9%;font-size:30px;animation-delay:-1s}
+@keyframes floaty{50%{transform:translateY(-12px) rotate(6deg)}}
+
+.app{
+  position:relative; z-index:1;
+  min-height:100dvh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:14px;
+}
+.shell{
+  width:min(100%,720px);
+  min-height:min(820px,calc(100dvh - 28px));
+  background:rgba(255,255,255,.76);
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
+  border:1px solid rgba(255,255,255,.92);
+  border-radius:34px;
+  box-shadow:var(--shadow);
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+}
+.top{
+  padding:18px 18px 10px;
+  background:linear-gradient(90deg,rgba(255,111,174,.10),rgba(107,215,255,.10),rgba(255,215,105,.12));
+  border-bottom:1px solid rgba(77,52,96,.07);
+}
+.topline{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px
+}
+.brand{
+  font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#765d7f;font-weight:800
+}
+.count{font-size:12px;color:#826f89;font-weight:700}
+.progress{
+  height:6px;border-radius:999px;background:rgba(122,92,255,.08);overflow:hidden
+}
+.progress i{
+  display:block;height:100%;width:0;
+  background:linear-gradient(90deg,var(--pink),var(--purple),var(--blue),var(--mint),var(--yellow));
+  border-radius:999px;
+  transition:width .35s ease
+}
+.stage{position:relative;flex:1;min-height:610px}
+.step{
+  position:absolute;inset:0;
+  padding:30px 22px 28px;
+  display:flex;flex-direction:column;justify-content:center;
+  opacity:0;transform:translateX(30px) scale(.985);
+  pointer-events:none;
+  transition:opacity .28s ease,transform .40s cubic-bezier(.16,1,.3,1);
+  overflow-y:auto;
+}
+.step.active{opacity:1;transform:none;pointer-events:auto}
+.kicker{
+  display:inline-flex;align-self:flex-start;
+  padding:8px 11px;border-radius:999px;
+  background:linear-gradient(90deg,#ffe4ef,#e9e2ff,#e3f8ff);
+  color:#6e5677;
+  font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:850;
+  margin-bottom:14px;
+  box-shadow:0 8px 18px rgba(122,92,255,.08)
+}
+h1,h2{margin:0;letter-spacing:-.045em;font-family:Georgia,"Times New Roman",serif;font-weight:700}
+h1{font-size:clamp(40px,10vw,68px);line-height:.95;max-width:9ch}
+h2{font-size:clamp(30px,7.5vw,50px);line-height:1.01;max-width:12ch}
+.sub{
+  margin:15px 0 0;color:var(--soft);font-size:15px;line-height:1.55;max-width:34ch
+}
+.accent{
+  font-family:Georgia,"Times New Roman",serif;font-style:italic;font-weight:400;
+  background:linear-gradient(90deg,var(--pink),var(--purple),var(--blue));
+  color:transparent;-webkit-background-clip:text;background-clip:text
+}
+.answers{display:grid;gap:10px;margin-top:22px}
+.choice{position:relative}
+.choice input{position:absolute;opacity:0;pointer-events:none}
+.choice label{
+  display:flex;align-items:center;gap:10px;
+  padding:14px 15px;border-radius:18px;
+  border:2px solid rgba(122,92,255,.09);
+  background:rgba(255,255,255,.86);
+  color:#4d4054;
+  box-shadow:0 10px 24px rgba(67,43,84,.06);
+  cursor:pointer;
+  transition:.2s ease;
+  line-height:1.3;
+  font-weight:650;
+}
+.choice label:before{
+  content:"✦";
+  display:grid;place-items:center;
+  width:26px;height:26px;border-radius:9px;
+  background:linear-gradient(135deg,#ffe5ef,#e8e2ff);
+  color:#8a68b0;font-size:12px;flex:0 0 auto
+}
+.choice input:checked+label{
+  transform:translateY(-2px) rotate(-.25deg);
+  border-color:rgba(255,111,174,.36);
+  background:linear-gradient(135deg,#fff,#fff6fa);
+  box-shadow:0 14px 28px rgba(255,111,174,.14)
+}
+.choice input:checked+label:before{
+  content:"✓";
+  color:#fff;
+  background:linear-gradient(135deg,var(--pink),var(--purple))
+}
+.custom-wrap{
+  margin-top:13px;padding-top:12px;border-top:1px dashed rgba(122,92,255,.14)
+}
+.custom-label{
+  display:block;font-size:12px;color:#7b6982;margin-bottom:8px;font-weight:750
+}
+.custom-input,textarea,input[type=date],input[type=time]{
+  width:100%;
+  border:2px solid rgba(122,92,255,.09);
+  background:rgba(255,255,255,.88);
+  color:var(--ink);
+  outline:none;border-radius:18px;padding:14px 15px;font-size:16px;
+  box-shadow:0 9px 22px rgba(67,43,84,.05)
+}
+.custom-input:focus,textarea:focus,input[type=date]:focus,input[type=time]:focus{
+  border-color:rgba(122,92,255,.28);
+  box-shadow:0 0 0 4px rgba(122,92,255,.08)
+}
+.custom-input::placeholder,textarea::placeholder{color:#a79aaa}
+textarea{min-height:112px;resize:none}
+.dategrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:20px}
+.nav{
+  display:flex;align-items:center;gap:10px;
+  padding:12px 16px calc(16px + env(safe-area-inset-bottom));
+  border-top:1px solid rgba(77,52,96,.07);
+  background:rgba(255,255,255,.72)
+}
+.navbtn{
+  appearance:none;border:none;
+  background:#f4eff9;color:#5c4a63;
+  border-radius:999px;padding:12px 17px;font-size:14px;font-weight:800;cursor:pointer
+}
+.navbtn.primary{
+  margin-left:auto;color:white;
+  background:linear-gradient(135deg,var(--pink),var(--purple));
+  box-shadow:0 12px 26px rgba(122,92,255,.22)
+}
+.navbtn:disabled{opacity:.25;pointer-events:none}
+.intro-btn{
+  margin-top:26px;align-self:flex-start;
+  appearance:none;border:none;border-radius:999px;padding:15px 21px;
+  color:#fff;font-size:15px;font-weight:850;cursor:pointer;
+  background:linear-gradient(135deg,var(--pink),var(--purple),var(--blue));
+  box-shadow:0 15px 30px rgba(122,92,255,.22)
+}
+
+/* mini multi-select card */
+.fun-card{
+  margin-top:22px;padding:15px;border-radius:26px;
+  background:linear-gradient(145deg,#ffffff,#fff7fb 45%,#eefaff);
+  border:1px solid rgba(122,92,255,.08);
+  box-shadow:0 18px 40px rgba(66,44,84,.09)
+}
+.fun-head{text-align:center;margin-bottom:14px}
+.fun-mini{
+  display:inline-block;padding:6px 10px;border-radius:999px;
+  background:#e9f8ff;color:#4a93b4;
+  font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:850
+}
+.fun-title{
+  margin-top:10px;font-size:clamp(28px,8vw,42px);line-height:.96;font-weight:900;
+  letter-spacing:-.045em
+}
+.fun-title span{
+  color:transparent;
+  background:linear-gradient(90deg,var(--pink),var(--purple),var(--blue));
+  -webkit-background-clip:text;background-clip:text
+}
+.fun-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:15px
+}
+.fun-item{position:relative}
+.fun-item input{position:absolute;opacity:0;pointer-events:none}
+.fun-item label{
+  min-height:82px;padding:10px 7px;border-radius:17px;
+  display:flex;align-items:center;justify-content:center;text-align:center;
+  color:#322a36;font-size:13px;font-weight:800;line-height:1.05;
+  background:#fff;border:2px solid #2f2932;
+  box-shadow:0 8px 16px rgba(0,0,0,.05);
+  cursor:pointer;transition:.18s ease
+}
+.fun-item:nth-child(4n+1) label{background:#fff7dc}
+.fun-item:nth-child(4n+2) label{background:#f4efff}
+.fun-item:nth-child(4n+3) label{background:#eafaff}
+.fun-item:nth-child(4n+4) label{background:#effdf8}
+.fun-item input:checked+label{
+  transform:translateY(-3px) rotate(-1deg) scale(1.02);
+  border-color:#1c1720;
+  box-shadow:0 0 0 4px rgba(107,215,255,.22),0 12px 20px rgba(0,0,0,.08)
+}
+.fun-item input:checked+label:after{
+  content:"✓";
+  position:absolute;right:6px;top:6px;
+  width:23px;height:23px;border-radius:50%;
+  display:grid;place-items:center;
+  color:#fff;font-size:12px;
+  background:linear-gradient(135deg,var(--pink),var(--purple))
+}
+.fun-help{
+  margin-top:12px;text-align:center;color:#7d6b84;font-size:13px;line-height:1.4
+}
+
+/* final */
+.final-note{
+  margin-top:16px;padding:15px 16px;border-radius:20px;
+  background:linear-gradient(135deg,#fff7d7,#fff1f6,#edfaff);
+  color:#5d4e63;font-size:14px;line-height:1.5;
+  border:1px solid rgba(122,92,255,.08)
+}
+.final-note strong{color:#2f2336}
+.finalbox{
+  margin-top:18px;padding:18px 15px 22px;border-radius:24px;
+  background:rgba(255,255,255,.82);
+  border:1px solid rgba(122,92,255,.08);
+  box-shadow:0 14px 34px rgba(73,49,91,.07);
+  text-align:center
+}
+.finalbox p{margin:0 0 12px;color:#66546e;font-size:14px;font-weight:700}
+.decision{
+  position:relative;
+  min-height:132px;
+  overflow:visible;
+}
+.yes,.no{
+  appearance:none;border:none;border-radius:999px;
+  padding:14px 19px;color:#fff;font-weight:900;font-size:15px;cursor:pointer;
+  transition:transform .18s ease,left .22s ease,top .22s ease,opacity .18s ease;
+  user-select:none;-webkit-tap-highlight-color:transparent
+}
+.yes{
+  position:absolute;left:50%;top:12px;
+  transform:translateX(-50%);
+  min-width:176px;
+  background:linear-gradient(135deg,var(--pink),var(--purple),var(--blue));
+  box-shadow:0 15px 30px rgba(122,92,255,.25);
+  z-index:4
+}
+.no{
+  position:absolute;left:50%;top:74px;
+  transform:translateX(-50%);
+  min-width:108px;
+  background:linear-gradient(135deg,#4d4056,#715b79);
+  box-shadow:0 10px 24px rgba(52,39,58,.18);
+  z-index:9999
+}
+.status{min-height:22px;margin-top:10px;color:#7a6880;font-size:13px;font-weight:700}
+
+.confetti{
+  position:fixed;width:9px;height:14px;border-radius:3px;pointer-events:none;z-index:9998;
+  animation:fall 1.2s ease-out forwards
+}
+@keyframes fall{
+  from{transform:translateY(-12px) rotate(0deg);opacity:1}
+  to{transform:translateY(120px) rotate(220deg);opacity:0}
+}
+
+@media(max-width:520px){
+  .app{padding:0}
+  .shell{min-height:100dvh;border-radius:0;border-left:0;border-right:0}
+  .top{padding:15px 15px 8px}
+  .stage{min-height:0}
+  .step{padding:24px 17px 24px;justify-content:flex-start;padding-top:6.5vh}
+  .nav{padding-left:13px;padding-right:13px}
+  .dategrid{grid-template-columns:1fr}
+  .fun-grid{grid-template-columns:repeat(4,1fr);gap:6px}
+  .fun-item label{min-height:74px;font-size:12px;padding:8px 5px}
+}
+@media(max-height:720px){
+  .step{justify-content:flex-start;padding-top:26px}
+  .stage{min-height:520px}
+}
+</style>
+</head>
+<body>
+<div class="floaty f1">💌</div>
+<div class="floaty f2">✨</div>
+<div class="floaty f3">🌸</div>
+<div class="floaty f4">☕</div>
+
+<div class="app">
+<main class="shell">
+<header class="top">
+  <div class="topline">
+    <div class="brand">küçük bir merak ✨</div>
+    <div class="count" id="count">başlıyoruz</div>
+  </div>
+  <div class="progress"><i id="bar"></i></div>
+</header>
+
+<div class="stage">
+<section class="step active" data-step="0">
+  <div class="kicker">💌 mini oyun</div>
+  <h1>Seni biraz daha <span class="accent">tanıyayım</span> mı?</h1>
+  <p class="sub">Biraz merak, biraz oyun, biraz da seni tanımak için. Şık seçebilirsin; hiçbirine sığmazsan kendi cevabını da yazarsın.</p>
+  <button type="button" class="intro-btn" onclick="go(1)">Başlayalım ✨</button>
+</section>
+
+<section class="step q" data-step="1" data-key="En sevdiği renk">
+  <div class="kicker">🎨 01 · renk meselesi</div>
+  <h2>En sevdiğin <span class="accent">renk</span>?</h2>
+  <div class="answers">
+    <div class="choice"><input id="q1a" type="radio" name="q1" value="Siyah"><label for="q1a">Siyah</label></div>
+    <div class="choice"><input id="q1b" type="radio" name="q1" value="Beyaz / krem"><label for="q1b">Beyaz / krem</label></div>
+    <div class="choice"><input id="q1c" type="radio" name="q1" value="Kırmızı / bordo"><label for="q1c">Kırmızı / bordo</label></div>
+    <div class="choice"><input id="q1d" type="radio" name="q1" value="Mavi / yeşil tonları"><label for="q1d">Mavi / yeşil tonları</label></div>
+  </div>
+  <div class="custom-wrap"><span class="custom-label">🎯 Benim cevabım başka:</span><input class="custom-input" data-custom="q1" placeholder="Benim rengim..."></div>
+</section>
+
+<section class="step q" data-step="2" data-key="En sevdiği çiçek">
+  <div class="kicker">🌷 02 · bunu not ediyorum</div>
+  <h2>Bir gün ansızın çiçek gelse?</h2>
+  <div class="answers">
+    <div class="choice"><input id="q2a" type="radio" name="q2" value="Gül"><label for="q2a">Gül</label></div>
+    <div class="choice"><input id="q2b" type="radio" name="q2" value="Papatya"><label for="q2b">Papatya</label></div>
+    <div class="choice"><input id="q2c" type="radio" name="q2" value="Lale"><label for="q2c">Lale</label></div>
+    <div class="choice"><input id="q2d" type="radio" name="q2" value="Orkide"><label for="q2d">Orkide</label></div>
+  </div>
+  <div class="custom-wrap"><span class="custom-label">🌼 Başka bir favorim var:</span><input class="custom-input" data-custom="q2" placeholder="Aslında ben..."></div>
+</section>
+
+<section class="step q" data-step="3" data-key="Favori tatlısı">
+  <div class="kicker">🍰 03 · önemli bilgi</div>
+  <h2>En sevdiğin <span class="accent">tatlı</span>?</h2>
+  <div class="answers">
+    <div class="choice"><input id="q3a" type="radio" name="q3" value="Çikolatalı tatlılar"><label for="q3a">Çikolatalı bir şey</label></div>
+    <div class="choice"><input id="q3b" type="radio" name="q3" value="Cheesecake"><label for="q3b">Cheesecake</label></div>
+    <div class="choice"><input id="q3c" type="radio" name="q3" value="Sütlü tatlı"><label for="q3c">Sütlü tatlı</label></div>
+    <div class="choice"><input id="q3d" type="radio" name="q3" value="Dondurma"><label for="q3d">Dondurma</label></div>
+  </div>
+  <div class="custom-wrap"><span class="custom-label">😋 Ben başka bir şey seçerim:</span><input class="custom-input" data-custom="q3" placeholder="Şunu görünce dayanamam..."></div>
+</section>
+
+<section class="step q" data-step="4" data-key="Favori içeceği">
+  <div class="kicker">🥤 04 · içecek seçimi</div>
+  <h2>Keyfin yerindeyken ne içersin?</h2>
+  <div class="answers">
+    <div class="choice"><input id="q4a" type="radio" name="q4" value="Kahve"><label for="q4a">Kahve</label></div>
+    <div class="choice"><input id="q4b" type="radio" name="q4" value="Çay"><label for="q4b">Çay</label></div>
+    <div class="choice"><input id="q4c" type="radio" name="q4" value="Şarap"><label for="q4c">Şarap</label></div>
+    <div class="choice"><input id="q4d" type="radio" name="q4" value="Kokteyl"><label for="q4d">Kokteyl</label></div>
+  </div>
+  <div class="custom-wrap"><span class="custom-label">🥂 Ben şunu seçerim:</span><input class="custom-input" data-custom="q4" placeholder="Asıl favorim..."></div>
+</section>
+
+<section class="step q" data-step="5" data-key="Favori müzik / sanatçı">
+  <div class="kicker">🎧 05 · kulaklık bende</div>
+  <h2>Bir akşamı güzelleştiren müzik?</h2>
+  <div class="answers">
+    <div class="choice"><input id="q5a" type="radio" name="q5" value="Türkçe alternatif"><label for="q5a">Türkçe alternatif</label></div>
+    <div class="choice"><input id="q5b" type="radio" name="q5" value="Pop"><label for="q5b">Pop</label></div>
+    <div class="choice"><input id="q5c" type="radio" name="q5" value="Elektronik"><label for="q5c">Elektronik</label></div>
+    <div class="choice"><input id="q5d" type="radio" name="q5" value="Rock"><label for="q5d">Rock</label></div>
+  </div>
+  <div class="custom-wrap"><span class="custom-label">🎵 Benim cevabım:</span><input class="custom-input" data-custom="q5" placeholder="Şarkı, sanatçı ya da tür..."></div>
+</section>
+
+<section class="step q" data-step="6" data-key="Bana iyi gelen şeyler kartı">
+  <div class="kicker">✨ 06 · mini seçim kartı</div>
+  <h2>Şimdi biraz <span class="accent">serbest seçim</span>.</h2>
+  <p class="sub">İstediğin kadar kutuya dokunabilirsin.</p>
+
+  <div class="fun-card">
+    <div class="fun-head">
+      <div class="fun-mini">mini mood card</div>
+      <div class="fun-title"><span>bana iyi gelen</span><br>küçük şeyler</div>
+    </div>
+    <div class="fun-grid">
+      <div class="fun-item"><input id="b1" type="checkbox" value="Yaz akşamları"><label for="b1">yaz<br>akşamları</label></div>
+      <div class="fun-item"><input id="b2" type="checkbox" value="Deniz görmek"><label for="b2">deniz<br>görmek</label></div>
+      <div class="fun-item"><input id="b3" type="checkbox" value="Çikolata"><label for="b3">çikolata<br>yemek</label></div>
+      <div class="fun-item"><input id="b4" type="checkbox" value="Uzun sohbet"><label for="b4">uzun<br>sohbet</label></div>
+      <div class="fun-item"><input id="b5" type="checkbox" value="Şarkı söylemek"><label for="b5">şarkı<br>söylemek</label></div>
+      <div class="fun-item"><input id="b6" type="checkbox" value="Yağmur"><label for="b6">yağmur<br>havası</label></div>
+      <div class="fun-item"><input id="b7" type="checkbox" value="Kediler / köpekler"><label for="b7">kediler /<br>köpekler</label></div>
+      <div class="fun-item"><input id="b8" type="checkbox" value="Spontane plan"><label for="b8">spontane<br>plan</label></div>
+      <div class="fun-item"><input id="b9" type="checkbox" value="Tatlı sürpriz"><label for="b9">tatlı<br>sürpriz</label></div>
+      <div class="fun-item"><input id="b10" type="checkbox" value="Kahve molası"><label for="b10">kahve<br>molası</label></div>
+      <div class="fun-item"><input id="b11" type="checkbox" value="Geç uyanmak"><label for="b11">geç<br>uyanmak</label></div>
+      <div class="fun-item"><input id="b12" type="checkbox" value="Seyahat"><label for="b12">seyahat<br>etmek</label></div>
+      <div class="fun-item"><input id="b13" type="checkbox" value="Güneş"><label for="b13">güneşli<br>hava</label></div>
+      <div class="fun-item"><input id="b14" type="checkbox" value="Müzik"><label for="b14">müzik<br>dinlemek</label></div>
+      <div class="fun-item"><input id="b15" type="checkbox" value="Yalnız kalmak"><label for="b15">biraz yalnız<br>kalmak</label></div>
+      <div class="fun-item"><input id="b16" type="checkbox" value="Gülmek"><label for="b16">bol bol<br>gülmek</label></div>
+    </div>
+    <div class="fun-help">Ne kadar çok seçersen o kadar çok ipucu bırakmış olursun 😄</div>
+  </div>
+
+  <div class="custom-wrap"><span class="custom-label">💭 Kartta olmayan bir şey:</span><input class="custom-input" id="bingoCustom" placeholder="Bana iyi gelen başka bir şey..."></div>
+</section>
+
+<section class="step q" data-step="7" data-key="Küçük sürpriz tercihi">
+  <div class="kicker">🎁 07 · sürpriz dosyası</div>
+  <h2>Seni en hızlı hangisi gülümsetir?</h2>
+  <div class="answers">
+    <div class="choice"><input id="q6a" type="radio" name="q6" value="Sevdiğim küçük bir şeyin hatırlanması"><label for="q6a">Sevdiğim küçük bir şeyin hatırlanması</label></div>
+    <div class="choice"><input id="q6b" type="radio" name="q6" value="Ansızın gelen tatlı / çiçek"><label for="q6b">Ansızın gelen tatlı ya da çiçek</label></div>
+    <div class="choice"><input id="q6c" type="radio" name="q6" value="Plansız küçük bir kaçamak"><label for="q6c">Plansız küçük bir kaçamak</label></div>
+    <div class="choice"><input id="q6d" type="radio" name="q6" value="Güzel bir mesaj"><label for="q6d">Tam zamanında gelen güzel bir mesaj</label></div>
+  </div>
+  <div class="custom-wrap"><span class="custom-label">😏 Asıl beni şununla yakalarsın:</span><input class="custom-input" data-custom="q6" placeholder="Benim cevabım..."></div>
+</section>
+
+<section class="step q" data-step="8" data-key="İdeal buluşma">
+  <div class="kicker">🌙 08 · plan yapıyoruz galiba</div>
+  <h2>İki kişilik güzel bir plan?</h2>
+  <div class="answers">
+    <div class="choice"><input id="q7a" type="radio" name="q7" value="Sakin bir kahve + uzun sohbet"><label for="q7a">Sakin bir kahve + uzun sohbet</label></div>
+    <div class="choice"><input id="q7b" type="radio" name="q7" value="Deniz kenarı yürüyüşü"><label for="q7b">Deniz kenarı yürüyüşü</label></div>
+    <div class="choice"><input id="q7c" type="radio" name="q7" value="Bir şeyler içmek"><label for="q7c">Bir şeyler içmek</label></div>
+    <div class="choice"><input id="q7d" type="radio" name="q7" value="Plansız spontane rota"><label for="q7d">Plansız, spontane bir rota</label></div>
+  </div>
+  <div class="custom-wrap"><span class="custom-label">🗺️ Senin planın:</span><input class="custom-input" data-custom="q7" placeholder="Bence şöyle olur..."></div>
+</section>
+
+<section class="step q" data-step="9" data-key="Bir buluşmada en önemli şey">
+  <div class="kicker">💫 09 · esas mesele</div>
+  <h2>Bir buluşmayı gerçekten güzel yapan şey?</h2>
+  <div class="answers">
+    <div class="choice"><input id="q8a" type="radio" name="q8" value="Rahat hissetmek"><label for="q8a">Rahat hissetmek</label></div>
+    <div class="choice"><input id="q8b" type="radio" name="q8" value="Sohbetin akması"><label for="q8b">Sohbetin kendiliğinden akması</label></div>
+    <div class="choice"><input id="q8c" type="radio" name="q8" value="Bolca gülmek"><label for="q8c">Bolca gülmek</label></div>
+    <div class="choice"><input id="q8d" type="radio" name="q8" value="Karşılıklı çekim"><label for="q8d">Biraz da karşılıklı çekim 😏</label></div>
+  </div>
+  <div class="custom-wrap"><span class="custom-label">✨ Bence asıl mesele:</span><input class="custom-input" data-custom="q8" placeholder="Benim cevabım..."></div>
+</section>
+
+<section class="step q" data-step="10" data-key="İlk izlenimi">
+  <div class="kicker">👀 10 · biraz flört</div>
+  <h2>Beni ilk tanıdığında ilk izlenimin?</h2>
+  <div class="answers">
+    <div class="choice"><input id="q9a" type="radio" name="q9" value="Biraz mesafeli"><label for="q9a">Biraz mesafeli</label></div>
+    <div class="choice"><input id="q9b" type="radio" name="q9" value="Eğlenceli"><label for="q9b">Eğlenceli</label></div>
+    <div class="choice"><input id="q9c" type="radio" name="q9" value="Merak uyandıran"><label for="q9c">Biraz merak uyandıran</label></div>
+    <div class="choice"><input id="q9d" type="radio" name="q9" value="Bunu söylemem"><label for="q9d">Bunu söylemeyeyim şimdi 😄</label></div>
+  </div>
+  <div class="custom-wrap"><span class="custom-label">🙈 Gerçek cevap:</span><input class="custom-input" data-custom="q9" placeholder="İlk düşündüğüm şey..."></div>
+</section>
+
+<section class="step q" data-step="11" data-key="Bende merak ettiği şey">
+  <div class="kicker">❓ 11 · sıra sende</div>
+  <h2>Benim hakkımda en çok neyi merak ediyorsun?</h2>
+  <div class="answers">
+    <div class="choice"><input id="q10a" type="radio" name="q10" value="Hayatını"><label for="q10a">Hayatını</label></div>
+    <div class="choice"><input id="q10b" type="radio" name="q10" value="Beni nasıl gördüğünü"><label for="q10b">Beni nasıl gördüğünü</label></div>
+    <div class="choice"><input id="q10c" type="radio" name="q10" value="Aklından geçenleri"><label for="q10c">Aklından geçenleri</label></div>
+    <div class="choice"><input id="q10d" type="radio" name="q10" value="Şimdilik bir şey merak etmiyorum"><label for="q10d">Şimdilik bir şey merak etmiyorum 😌</label></div>
+  </div>
+  <div class="custom-wrap"><span class="custom-label">🎤 Mikrofon sende:</span><input class="custom-input" data-custom="q10" placeholder="Aslında şunu sorardım..."></div>
+</section>
+
+<section class="step q" data-step="12" data-key="Bende ilk dikkatini çeken şey">
+  <div class="kicker">✨ 12 · dürüst cevap</div>
+  <h2>Bende ilk dikkatini çeken şey?</h2>
+  <div class="answers">
+    <div class="choice"><input id="q11a" type="radio" name="q11" value="Bakışların"><label for="q11a">Bakışların</label></div>
+    <div class="choice"><input id="q11b" type="radio" name="q11" value="Konuşma tarzın"><label for="q11b">Konuşma tarzın</label></div>
+    <div class="choice"><input id="q11c" type="radio" name="q11" value="Tavırların"><label for="q11c">Tavırların</label></div>
+    <div class="choice"><input id="q11d" type="radio" name="q11" value="Başka bir şey"><label for="q11d">Başka bir şey 😏</label></div>
+  </div>
+  <div class="custom-wrap"><span class="custom-label">👀 Peki ne?</span><input class="custom-input" data-custom="q11" placeholder="Şu..."></div>
+</section>
+
+<section class="step q" data-step="13" data-key="Baş başa sohbete bakışı">
+  <div class="kicker">☕ 13 · son düzlüğe girdik</div>
+  <h2>İkimiz baş başa otursak sohbet nasıl biter?</h2>
+  <div class="answers">
+    <div class="choice"><input id="q12a" type="radio" name="q12" value="Bir kahve daha söyleriz"><label for="q12a">Bir kahve daha söyleriz</label></div>
+    <div class="choice"><input id="q12b" type="radio" name="q12" value="Saatin nasıl geçtiğini anlamayız"><label for="q12b">Saatin nasıl geçtiğini anlamayız</label></div>
+    <div class="choice"><input id="q12c" type="radio" name="q12" value="Kısa tutarız"><label for="q12c">Kısa tutarız</label></div>
+    <div class="choice"><input id="q12d" type="radio" name="q12" value="Bunu deneyip görelim"><label for="q12d">Bunu deneyip görelim 😄</label></div>
+  </div>
+  <div class="custom-wrap"><span class="custom-label">📝 Senaryon:</span><input class="custom-input" data-custom="q12" placeholder="Bence şöyle olur..."></div>
+</section>
+
+<section class="step q" data-step="14" data-key="Bana bırakmak istediği not">
+  <div class="kicker">💬 14 · son soru</div>
+  <h2>Bana tek bir şey söyleme hakkın olsa?</h2>
+  <div class="answers">
+    <div class="choice"><input id="q13a" type="radio" name="q13" value="Çok düşünüyorsun"><label for="q13a">Çok düşünüyorsun 😄</label></div>
+    <div class="choice"><input id="q13b" type="radio" name="q13" value="Biraz daha rahat ol"><label for="q13b">Biraz daha rahat ol</label></div>
+    <div class="choice"><input id="q13c" type="radio" name="q13" value="Bunu yüz yüze söylerim"><label for="q13c">Bunu yüz yüze söylerim</label></div>
+    <div class="choice"><input id="q13d" type="radio" name="q13" value="Şimdilik bende kalsın"><label for="q13d">Şimdilik bende kalsın 😌</label></div>
+  </div>
+  <div class="custom-wrap"><span class="custom-label">💭 İstersen gerçekten yaz:</span><input class="custom-input" data-custom="q13" placeholder="Sana şunu söylemek isterdim..."></div>
+</section>
+
+<section class="step" data-step="15">
+  <div class="kicker">☕ 15 · artık bir tarih lazım</div>
+  <h2>Hâlâ doğru düzgün oturup <span class="accent">iki laf edemedik</span> ya…</h2>
+  <p class="sub">O yüzden bu kısmı biraz kolaylaştırıyorum.</p>
+
+  <div class="final-note" style="text-align:center;padding:18px 16px;">
+    <strong style="display:block;font-family:Georgia,'Times New Roman',serif;font-size:27px;line-height:1.08;letter-spacing:-.035em;margin-bottom:7px;">
+      Çaylar benden,<br><span class="accent">gerisi senden.</span>
+    </strong>
+    Sen sadece günü ve saati seç. Bu sefer gerçekten oturalım. :)
+  </div>
+
+  <div class="dategrid">
+    <input type="date" id="date" aria-label="Tarih">
+    <input type="time" id="time" aria-label="Saat">
+  </div>
+
+  <div class="finalbox">
+    <p>Ee… ne zaman oturuyoruz?</p>
+    <div class="decision" id="decisionArea">
+      <button type="button" class="yes" id="yes">Olur ✨</button>
+      <button type="button" class="no" id="no">Olmaz</button>
+    </div>
+    <div class="status" id="status">Takvim sende 😄</div>
+  </div>
+</section>
+</div>
+
+<footer class="nav" id="nav">
+  <button class="navbtn" id="back" type="button">← Geri</button>
+  <button class="navbtn primary" id="next" type="button">Devam →</button>
+</footer>
+</main>
+</div>
+
+<script>
+const TELEGRAM_ENDPOINT = "https://script.google.com/macros/s/AKfycbxEIwJJuQF48dRN78URuJrWx6kimk5KA8UPaYewtUsV_6O_CgnzTzqNytWATQNxURlJRw/exec";
+
+const steps=[...document.querySelectorAll(".step")];
+const bar=document.getElementById("bar");
+const count=document.getElementById("count");
+const back=document.getElementById("back");
+const next=document.getElementById("next");
+const nav=document.getElementById("nav");
+const yes=document.getElementById("yes");
+const no=document.getElementById("no");
+const statusEl=document.getElementById("status");
+const dateEl=document.getElementById("date");
+const timeEl=document.getElementById("time");
+
+let current=0;
+let noClicks=0;
+let noIsFixed=false;
+
+function render(){
+  steps.forEach((s,i)=>s.classList.toggle("active",i===current));
+  const total=steps.length-1;
+  bar.style.width=(current/total*100)+"%";
+  count.textContent=current===0?"başlıyoruz":current+"/"+total;
+  back.disabled=current===0;
+  next.style.display=(current===0||current===steps.length-1)?"none":"inline-block";
+  nav.style.display=current===steps.length-1?"none":"flex";
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+window.go=function(i){current=i;render()};
+back.onclick=()=>{if(current>0){current--;render()}};
+next.onclick=()=>{if(current<steps.length-1){current++;render()}};
+
+function answerForStep(step){
+  const radio=step.querySelector('input[type="radio"]:checked');
+  const custom=step.querySelector(".custom-input");
+  const pieces=[];
+  if(step.dataset.key==="Bana iyi gelen şeyler kartı"){
+    const checked=[...step.querySelectorAll('.fun-item input:checked')].map(x=>x.value);
+    if(checked.length) pieces.push("Seçtikleri: "+checked.join(", "));
+    const bc=document.getElementById("bingoCustom");
+    if(bc && bc.value.trim()) pieces.push("Kendi cevabı: "+bc.value.trim());
+    return pieces.length?pieces.join(" | "):"—";
+  }
+  if(radio) pieces.push(radio.value);
+  if(custom && custom.value.trim()) pieces.push("Kendi cevabı: "+custom.value.trim());
+  return pieces.length?pieces.join(" | "):"—";
+}
+
+function formatDateTR(value){
+  if(!value) return "";
+  const [y,m,d]=value.split("-");
+  return `${d}.${m}.${y}`;
+}
+
+function buildMessage(){
+  const lines=["✨ KÜÇÜK MERAK — YENİ CEVAP",""];
+  document.querySelectorAll(".step.q").forEach(step=>{
+    lines.push("• "+(step.dataset.key||"Cevap"));
+    lines.push(answerForStep(step));
+    lines.push("");
+  });
+  lines.push("☕ BULUŞMA");
+  lines.push("Olur ✨");
+  if(dateEl.value) lines.push("📅 Tarih: "+formatDateTR(dateEl.value));
+  if(timeEl.value) lines.push("🕒 Saat: "+timeEl.value);
+  lines.push("");
+  lines.push("Çaylar benden, gerisi senden 😄");
+  return lines.join("\n");
+}
+
+function sendToTelegram(){
+  return new Promise((resolve) => {
+    let frame = document.getElementById("telegramSink");
+    if(!frame){
+      frame = document.createElement("iframe");
+      frame.id = "telegramSink";
+      frame.name = "telegramSink";
+      frame.style.display = "none";
+      document.body.appendChild(frame);
+    }
+
+    const form = document.createElement("form");
+    form.method = "POST";
+    form.action = TELEGRAM_ENDPOINT;
+    form.target = "telegramSink";
+    form.style.display = "none";
+
+    const messageInput = document.createElement("input");
+    messageInput.type = "hidden";
+    messageInput.name = "message";
+    messageInput.value = buildMessage();
+
+    form.appendChild(messageInput);
+    document.body.appendChild(form);
+
+    let done = false;
+    const finish = () => {
+      if(done) return;
+      done = true;
+      form.remove();
+      resolve();
+    };
+
+    frame.onload = finish;
+    form.submit();
+
+    // Apps Script yönlendirmesi/iframe load olayı bazı mobil tarayıcılarda
+    // gecikebildiği için kullanıcı arayüzünü bekletmemek adına yedek süre.
+    setTimeout(finish, 1600);
+  });
+}
+
+function confettiBurst(){
+  const colors=["#ff6fae","#7a5cff","#6bd7ff","#79e6c3","#ffd769","#ff8d72"];
+  for(let i=0;i<26;i++){
+    const c=document.createElement("span");
+    c.className="confetti";
+    c.style.left=(50+Math.random()*20-10)+"vw";
+    c.style.top=(20+Math.random()*8)+"vh";
+    c.style.background=colors[Math.floor(Math.random()*colors.length)];
+    c.style.transform=`rotate(${Math.random()*180}deg)`;
+    c.style.animationDelay=(Math.random()*.18)+"s";
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),1500);
+  }
+}
+
+yes.onclick=async()=>{
+  if(!dateEl.value){
+    statusEl.textContent="Önce bir tarih seçelim 😄";
+    dateEl.focus();
+    return;
+  }
+  if(!timeEl.value){
+    statusEl.textContent="Bir de saat lazım ✨";
+    timeEl.focus();
+    return;
+  }
+
+  yes.disabled = true;
+  yes.style.opacity = ".72";
+  yes.textContent = "Gönderiliyor…";
+  statusEl.textContent = "Bir saniye ✨";
+
+  try{
+    await sendToTelegram();
+    confettiBurst();
+    yes.textContent = "Tamamdır ✓";
+    yes.style.opacity = "1";
+    statusEl.textContent = "Tarih not edildi 😄";
+  }catch(err){
+    yes.disabled = false;
+    yes.style.opacity = "1";
+    yes.textContent = "Olur ✨";
+    statusEl.textContent = "Gönderilemedi, bir kez daha dener misin?";
+  }
+};
+
+function overlaps(rect1,rect2,margin=22){
+  return !(rect1.right+margin<rect2.left || rect1.left-margin>rect2.right || rect1.bottom+margin<rect2.top || rect1.top-margin>rect2.bottom);
+}
+
+function moveNo(){
+  noClicks++;
+
+  if(!noIsFixed){
+    const r=no.getBoundingClientRect();
+    no.style.position="fixed";
+    no.style.left=r.left+"px";
+    no.style.top=r.top+"px";
+    no.style.transform="none";
+    no.style.margin="0";
+    no.style.zIndex="9999";
+    document.body.appendChild(no);
+    noIsFixed=true;
+  }
+
+  const scale=Math.max(.24,1-noClicks*.09);
+  const yesRect=yes.getBoundingClientRect();
+
+  const baseW=Math.max(58,108*scale);
+  const baseH=Math.max(34,48*scale);
+  const pad=10;
+
+  let x=pad,y=pad,trial=0;
+  do{
+    x=pad+Math.random()*Math.max(1,window.innerWidth-baseW-pad*2);
+    y=pad+Math.random()*Math.max(1,window.innerHeight-baseH-pad*2);
+    trial++;
+  }while(overlaps(
+    {left:x,top:y,right:x+baseW,bottom:y+baseH},
+    yesRect,
+    34
+  ) && trial<80);
+
+  no.style.left=x+"px";
+  no.style.top=y+"px";
+  no.style.transform=`scale(${scale.toFixed(2)})`;
+
+  const texts=["Emin misin?","hop 😄","kaçtım","buradayım 👀","yakalarsan :)","yok artık","çok hızlısın","😶‍🌫️","minicik oldum","hala buradayım"];
+  const statuses=[
+    "Biraz hareketli çıktı 😄",
+    "Bu buton yerinde duramıyor.",
+    "Kaçıyor galiba 👀",
+    "Bir kez daha dene bakalım.",
+    "Bence diğer buton daha sakin 😄",
+    "Bu iş biraz oyuna döndü.",
+    "Yakalamak zorlaşıyor 😏"
+  ];
+  no.textContent=texts[(noClicks-1)%texts.length];
+  statusEl.textContent=statuses[(noClicks-1)%statuses.length];
+
+  if(noClicks>8){
+    no.style.opacity=Math.max(.45,1-(noClicks-8)*.06);
+  }
+}
+
+no.addEventListener("click",e=>{
+  e.preventDefault();
+  e.stopPropagation();
+  moveNo();
+});
+no.addEventListener("touchstart",e=>{
+  e.preventDefault();
+  e.stopPropagation();
+  moveNo();
+},{passive:false});
+
+window.addEventListener("resize",()=>{
+  if(noIsFixed) moveNo();
+});
+
+const today=new Date();
+dateEl.min=`${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,"0")}-${String(today.getDate()).padStart(2,"0")}`;
+
+render();
+</script>
+</body>
+</html>
