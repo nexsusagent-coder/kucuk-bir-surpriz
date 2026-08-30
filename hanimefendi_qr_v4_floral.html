@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Birkaç Satır</title>
+  <style>
+    :root{
+      --bg-a:#fbf6f1;
+      --bg-b:#f6eee7;
+      --bg-c:#f0e2db;
+      --paper:#fffaf6;
+      --rose:#d7b8b0;
+      --rose-2:#c79d93;
+      --gold:#b89263;
+      --text:#53443d;
+      --text-soft:#7e6b62;
+      --line:rgba(184,146,99,.22);
+      --shadow:0 24px 70px rgba(92, 72, 62, 0.13);
+    }
+
+    *{box-sizing:border-box}
+    html,body{
+      margin:0;
+      width:100%;
+      height:100%;
+      font-family: "Georgia", "Times New Roman", serif;
+      background: linear-gradient(180deg, var(--bg-a) 0%, var(--bg-b) 52%, var(--bg-c) 100%);
+      color:var(--text);
+      overflow:hidden;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    button{
+      font: inherit;
+      border: none;
+      outline: none;
+    }
+
+    .app{
+      position:relative;
+      width:100%;
+      height:100dvh;
+      overflow:hidden;
+      background:
+        radial-gradient(900px 500px at -10% 0%, rgba(255,255,255,.7), transparent 55%),
+        radial-gradient(700px 500px at 120% 20%, rgba(236,211,204,.45), transparent 60%),
+        radial-gradient(900px 800px at 50% 110%, rgba(224,203,189,.35), transparent 60%),
+        linear-gradient(180deg, var(--bg-a), var(--bg-b), var(--bg-c));
+    }
+
+    .light{
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      background:
+        linear-gradient(115deg, rgba(255,255,255,.55), transparent 28%),
+        linear-gradient(180deg, rgba(255,255,255,.18), transparent 38%);
+      mix-blend-mode:screen;
+      opacity:.6;
+    }
+
+    .grain{
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      opacity:.06;
+      background-image:
+        radial-gradient(circle, rgba(87,70,58,.22) .7px, transparent .8px);
+      background-size: 11px 11px;
+    }
+
+    .petal-layer{
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      overflow:hidden;
+      z-index:2;
+    }
+
+    .petal{
+      position:absolute;
+      top:-10vh;
+      width:16px;
+      height:22px;
+      border-radius: 60% 40% 55% 45% / 55% 45% 55% 45%;
+      opacity:.58;
+      background: linear-gradient(180deg, rgba(239,206,203,.92), rgba(211,164,157,.84));
+      box-shadow: inset -2px -3px 4px rgba(255,255,255,.25), 0 6px 12px rgba(170,132,124,.15);
+      transform: rotate(0deg);
+      animation-name: fall;
+      animation-timing-function: linear;
+      animation-iteration-count: infinite;
+    }
+
+    .petal.alt1{ background: linear-gradient(180deg, rgba(244,227,219,.95), rgba(223,190,175,.85)); }
+    .petal.alt2{ background: linear-gradient(180deg, rgba(237,215,221,.95), rgba(210,173,184,.82)); }
+    .petal.alt3{ background: linear-gradient(180deg, rgba(242,231,224,.95), rgba(212,183,170,.85)); }
+
+    @keyframes fall{
+      0%   { transform:translate3d(0,-10vh,0) rotate(0deg); opacity:0; }
+      8%   { opacity:.62; }
+      50%  { transform:translate3d(var(--drift), 55vh, 0) rotate(130deg); }
+      100% { transform:translate3d(calc(var(--drift) * 1.6), 115vh, 0) rotate(280deg); opacity:0; }
+    }
+
+    .scene{
+      position:absolute;
+      inset:0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:84px 24px 150px;
+      opacity:0;
+      transform:translateY(20px) scale(.992);
+      transition: opacity .65s ease, transform .65s ease;
+      pointer-events:none;
+      z-index:5;
+    }
+
+    .scene.active{
+      opacity:1;
+      transform:translateY(0) scale(1);
+      pointer-events:auto;
+    }
+
+    .card{
+      position:relative;
+      width:min(92vw, 760px);
+      min-height:min(68dvh, 760px);
+      border-radius:32px;
+      background: linear-gradient(180deg, rgba(255,250,246,.78), rgba(255,250,246,.62));
+      backdrop-filter: blur(10px);
+      box-shadow: var(--shadow);
+      border:1px solid rgba(255,255,255,.42);
+      padding:42px 28px 34px;
+      overflow:hidden;
+    }
+
+    .card:before{
+      content:"";
+      position:absolute;
+      inset:15px;
+      border-radius:24px;
+      border:1px solid rgba(184,146,99,.12);
+      pointer-events:none;
+    }
+
+    .top-floral{
+      position:absolute;
+      top:18px;
+      left:50%;
+      transform:translateX(-50%);
+      width:min(78%, 460px);
+      height:72px;
+      opacity:.7;
+      z-index:0;
+    }
+
+    .top-floral:before,
+    .top-floral:after{
+      content:"";
+      position:absolute;
+      top:34px;
+      width:42%;
+      height:1px;
+      background:linear-gradient(90deg, transparent, rgba(184,146,99,.38), transparent);
+    }
+
+    .top-floral:before{ left:0; }
+    .top-floral:after{ right:0; }
+
+    .flower-mini{
+      position:absolute;
+      left:50%;
+      top:8px;
+      transform:translateX(-50%);
+      width:56px;
+      height:56px;
+    }
+
+    .flower-mini i{
+      position:absolute;
+      left:50%;
+      top:50%;
+      width:18px;
+      height:26px;
+      margin-left:-9px;
+      margin-top:-19px;
+      border-radius: 60% 40% 60% 40%;
+      border:1px solid rgba(184,146,99,.36);
+      background:rgba(255,250,246,.54);
+      transform-origin:50% 90%;
+    }
+
+    .flower-mini i:nth-child(1){ transform:translateY(-7px) rotate(0deg); }
+    .flower-mini i:nth-child(2){ transform:translateY(-2px) rotate(72deg); }
+    .flower-mini i:nth-child(3){ transform:translateY(-2px) rotate(144deg); }
+    .flower-mini i:nth-child(4){ transform:translateY(-2px) rotate(216deg); }
+    .flower-mini i:nth-child(5){ transform:translateY(-2px) rotate(288deg); }
+    .flower-mini span{
+      position:absolute;
+      left:50%;
+      top:50%;
+      width:10px;
+      height:10px;
+      margin-left:-5px;
+      margin-top:-5px;
+      border-radius:50%;
+      background:rgba(184,146,99,.58);
+    }
+
+    .content{
+      position:relative;
+      z-index:2;
+      width:100%;
+      min-height:calc(min(68dvh, 760px) - 76px);
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      padding:42px 12px 12px;
+    }
+
+    .eyebrow{
+      margin-bottom:18px;
+      font-family: Arial, sans-serif;
+      font-size:11px;
+      letter-spacing:.28em;
+      text-transform:uppercase;
+      color:var(--text-soft);
+      opacity:.88;
+    }
+
+    .quote{
+      margin:0;
+      max-width:560px;
+      white-space:pre-line;
+      font-size:clamp(31px, 7.2vw, 56px);
+      line-height:1.28;
+      letter-spacing:-.02em;
+      text-wrap:balance;
+      color:#574942;
+    }
+
+    .quote.small{
+      font-size:clamp(28px, 6.3vw, 48px);
+      line-height:1.34;
+      max-width:620px;
+    }
+
+    .quote.hero{
+      font-size:clamp(40px, 9vw, 74px);
+      line-height:1.14;
+    }
+
+    .quote.final{
+      font-size:clamp(31px, 6.9vw, 52px);
+      line-height:1.32;
+    }
+
+    .quote .accent{
+      color:#8b5e55;
+      font-style:italic;
+    }
+
+    .divider{
+      width:110px;
+      height:18px;
+      margin-top:26px;
+      position:relative;
+      opacity:.9;
+    }
+
+    .divider:before,
+    .divider:after{
+      content:"";
+      position:absolute;
+      top:8px;
+      width:40px;
+      height:1px;
+      background:var(--line);
+    }
+
+    .divider:before{ left:0; }
+    .divider:after{ right:0; }
+    .divider span{
+      position:absolute;
+      left:50%;
+      top:0;
+      transform:translateX(-50%);
+      color:var(--gold);
+      font-size:16px;
+    }
+
+    .botanical-left,
+    .botanical-right{
+      position:absolute;
+      bottom:14px;
+      width:130px;
+      height:230px;
+      opacity:.38;
+      z-index:0;
+      pointer-events:none;
+    }
+
+    .botanical-left{ left:8px; }
+    .botanical-right{ right:8px; transform:scaleX(-1); }
+
+    .stem{
+      position:absolute;
+      left:58px;
+      top:38px;
+      width:1px;
+      height:170px;
+      background:linear-gradient(180deg, rgba(184,146,99,.8), rgba(184,146,99,.16));
+    }
+
+    .leaf{
+      position:absolute;
+      width:28px;
+      height:56px;
+      border:1px solid rgba(184,146,99,.42);
+      border-radius:100% 0 100% 0;
+      background:rgba(255,250,246,.24);
+    }
+
+    .leaf.l1{ left:31px; top:70px; transform:rotate(-35deg); }
+    .leaf.l2{ left:57px; top:102px; transform:scaleX(-1) rotate(-30deg); }
+    .leaf.l3{ left:24px; top:132px; transform:rotate(-55deg); }
+    .leaf.l4{ left:66px; top:148px; transform:scaleX(-1) rotate(-46deg); }
+
+    .bud{
+      position:absolute;
+      width:34px;
+      height:54px;
+      border:1px solid rgba(184,146,99,.42);
+      border-radius:60% 40% 60% 40%;
+      background:rgba(255,250,246,.28);
+    }
+
+    .bud.b1{ left:41px; top:4px; transform:rotate(-6deg);}
+    .bud.b2{ left:18px; top:18px; transform:rotate(-42deg);}
+    .bud.b3{ left:64px; top:18px; transform:rotate(42deg);}
+
+    .scene.s6 .card,
+    .scene.s7 .card,
+    .scene.s8 .card{
+      background: linear-gradient(180deg, rgba(255,250,246,.85), rgba(255,250,246,.7));
+    }
+
+    .scene.s6 .quote.hero{ color:#6a4b44; }
+    .scene.s7 .quote.final{ color:#5a4943; }
+    .scene.s8 .quote.final{ color:#654f47; }
+
+    .footer{
+      position:absolute;
+      left:0;
+      right:0;
+      bottom:calc(22px + env(safe-area-inset-bottom));
+      z-index:12;
+      display:flex;
+      justify-content:center;
+      pointer-events:none;
+      padding:0 20px;
+    }
+
+    .next{
+      pointer-events:auto;
+      position:relative;
+      min-width:188px;
+      height:56px;
+      padding:0 26px;
+      border-radius:999px;
+      border:1px solid rgba(184,146,99,.3);
+      background:rgba(255,250,246,.72);
+      color:#6a564d;
+      cursor:pointer;
+      box-shadow:0 16px 36px rgba(115, 86, 72, .13);
+      transition:transform .16s ease, background .18s ease, box-shadow .18s ease;
+      font-size:17px;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+    }
+
+    .next:active{ transform:scale(.985); }
+    .next:hover{
+      background:rgba(255,250,246,.88);
+      box-shadow:0 18px 42px rgba(115, 86, 72, .16);
+    }
+    .next.hide{ display:none; }
+
+    .progress{
+      position:absolute;
+      left:22px;
+      right:22px;
+      bottom:calc(94px + env(safe-area-inset-bottom));
+      z-index:12;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      pointer-events:none;
+    }
+
+    .dot{
+      width:8px;
+      height:8px;
+      border-radius:999px;
+      background:rgba(184,146,99,.22);
+      box-shadow: inset 0 0 0 1px rgba(184,146,99,.08);
+      transition: all .28s ease;
+    }
+
+    .dot.active{
+      width:24px;
+      background:linear-gradient(90deg, rgba(199,157,147,.95), rgba(184,146,99,.9));
+    }
+
+    .endnote{
+      position:absolute;
+      left:0;
+      right:0;
+      bottom:calc(34px + env(safe-area-inset-bottom));
+      z-index:12;
+      text-align:center;
+      font-family:Arial, sans-serif;
+      font-size:12px;
+      letter-spacing:.18em;
+      text-transform:uppercase;
+      color:rgba(104,86,77,.55);
+      opacity:0;
+      transition:opacity .6s ease;
+      pointer-events:none;
+    }
+
+    .endnote.show{ opacity:1; }
+
+    @media (max-width: 600px){
+      .scene{ padding-top:76px; padding-bottom:144px; }
+      .card{
+        width:100%;
+        min-height:72dvh;
+        border-radius:28px;
+        padding:38px 20px 28px;
+      }
+      .card:before{ inset:12px; border-radius:22px; }
+      .content{ min-height:calc(72dvh - 66px); padding:40px 8px 8px; }
+      .botanical-left,.botanical-right{ width:100px; height:190px; opacity:.3; }
+      .footer{ bottom:calc(18px + env(safe-area-inset-bottom)); }
+      .progress{ bottom:calc(88px + env(safe-area-inset-bottom)); }
+      .next{ width:min(82vw, 280px); }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="light"></div>
+    <div class="grain"></div>
+    <div class="petal-layer" id="petals"></div>
+
+    <section class="scene s1 active">
+      <div class="card">
+        <div class="top-floral">
+          <div class="flower-mini"><i></i><i></i><i></i><i></i><i></i><span></span></div>
+        </div>
+        <div class="content">
+          <div class="eyebrow">Bir düşünceyle başlayalım</div>
+          <p class="quote">Bazı insanlar vardır;
+ilk bakışta fark edilir.</p>
+          <div class="divider"><span>✦</span></div>
+        </div>
+        <div class="botanical-left">
+          <div class="stem"></div><div class="bud b1"></div><div class="bud b2"></div><div class="bud b3"></div>
+          <div class="leaf l1"></div><div class="leaf l2"></div><div class="leaf l3"></div><div class="leaf l4"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="scene s2">
+      <div class="card">
+        <div class="top-floral">
+          <div class="flower-mini"><i></i><i></i><i></i><i></i><i></i><span></span></div>
+        </div>
+        <div class="content">
+          <div class="eyebrow">Sonra merak başlar</div>
+          <p class="quote">Bazılarıysa fark edildikten sonra
+<span class="accent">merak edilmeye başlar.</span></p>
+          <div class="divider"><span>✦</span></div>
+        </div>
+        <div class="botanical-right">
+          <div class="stem"></div><div class="bud b1"></div><div class="bud b2"></div><div class="bud b3"></div>
+          <div class="leaf l1"></div><div class="leaf l2"></div><div class="leaf l3"></div><div class="leaf l4"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="scene s3">
+      <div class="card">
+        <div class="top-floral">
+          <div class="flower-mini"><i></i><i></i><i></i><i></i><i></i><span></span></div>
+        </div>
+        <div class="content">
+          <div class="eyebrow">Çünkü görünen her şey değildir</div>
+          <p class="quote small">Çünkü ilk gördüğün şey,
+onların yalnızca görünen tarafıdır.</p>
+          <div class="divider"><span>✦</span></div>
+        </div>
+        <div class="botanical-left">
+          <div class="stem"></div><div class="bud b1"></div><div class="bud b2"></div><div class="bud b3"></div>
+          <div class="leaf l1"></div><div class="leaf l2"></div><div class="leaf l3"></div><div class="leaf l4"></div>
+        </div>
+        <div class="botanical-right">
+          <div class="stem"></div><div class="bud b1"></div><div class="bud b2"></div><div class="bud b3"></div>
+          <div class="leaf l1"></div><div class="leaf l2"></div><div class="leaf l3"></div><div class="leaf l4"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="scene s4">
+      <div class="card">
+        <div class="top-floral">
+          <div class="flower-mini"><i></i><i></i><i></i><i></i><i></i><span></span></div>
+        </div>
+        <div class="content">
+          <div class="eyebrow">Ve ayrıntılar</div>
+          <p class="quote small">Sonra küçük ayrıntıları fark edersin;
+bir bakışı, bir gülüşü,
+kelimeler arasındaki küçücük sessizlikleri…</p>
+          <div class="divider"><span>✦</span></div>
+        </div>
+        <div class="botanical-right">
+          <div class="stem"></div><div class="bud b1"></div><div class="bud b2"></div><div class="bud b3"></div>
+          <div class="leaf l1"></div><div class="leaf l2"></div><div class="leaf l3"></div><div class="leaf l4"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="scene s5">
+      <div class="card">
+        <div class="top-floral">
+          <div class="flower-mini"><i></i><i></i><i></i><i></i><i></i><span></span></div>
+        </div>
+        <div class="content">
+          <div class="eyebrow">Bir noktada anlarsın</div>
+          <p class="quote small">Ve bir noktada anlarsın;
+bazı insanlar görüldüğünden
+çok daha fazlasını taşır içinde.</p>
+          <div class="divider"><span>✦</span></div>
+        </div>
+        <div class="botanical-left">
+          <div class="stem"></div><div class="bud b1"></div><div class="bud b2"></div><div class="bud b3"></div>
+          <div class="leaf l1"></div><div class="leaf l2"></div><div class="leaf l3"></div><div class="leaf l4"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="scene s6">
+      <div class="card">
+        <div class="top-floral">
+          <div class="flower-mini"><i></i><i></i><i></i><i></i><i></i><span></span></div>
+        </div>
+        <div class="content">
+          <div class="eyebrow">Asıl söylemek istediğim</div>
+          <p class="quote hero">Ve sen
+<span class="accent">hanımefendi;</span></p>
+        </div>
+        <div class="botanical-left">
+          <div class="stem"></div><div class="bud b1"></div><div class="bud b2"></div><div class="bud b3"></div>
+          <div class="leaf l1"></div><div class="leaf l2"></div><div class="leaf l3"></div><div class="leaf l4"></div>
+        </div>
+        <div class="botanical-right">
+          <div class="stem"></div><div class="bud b1"></div><div class="bud b2"></div><div class="bud b3"></div>
+          <div class="leaf l1"></div><div class="leaf l2"></div><div class="leaf l3"></div><div class="leaf l4"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="scene s7">
+      <div class="card">
+        <div class="top-floral">
+          <div class="flower-mini"><i></i><i></i><i></i><i></i><i></i><span></span></div>
+        </div>
+        <div class="content">
+          <div class="eyebrow">Bir cümleye sığarsa</div>
+          <p class="quote final"><span class="accent">Şiir olacak kadar güzelsin,</span>
+ama kimsenin anlayamayacağı kadar da derinsin.</p>
+        </div>
+        <div class="botanical-right">
+          <div class="stem"></div><div class="bud b1"></div><div class="bud b2"></div><div class="bud b3"></div>
+          <div class="leaf l1"></div><div class="leaf l2"></div><div class="leaf l3"></div><div class="leaf l4"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="scene s8">
+      <div class="card">
+        <div class="top-floral">
+          <div class="flower-mini"><i></i><i></i><i></i><i></i><i></i><span></span></div>
+        </div>
+        <div class="content">
+          <div class="eyebrow">Ve son olarak</div>
+          <p class="quote final">Neşeyle gülen gözlerin
+<span class="accent">hep böyle kalsın.</span></p>
+        </div>
+        <div class="botanical-left">
+          <div class="stem"></div><div class="bud b1"></div><div class="bud b2"></div><div class="bud b3"></div>
+          <div class="leaf l1"></div><div class="leaf l2"></div><div class="leaf l3"></div><div class="leaf l4"></div>
+        </div>
+        <div class="botanical-right">
+          <div class="stem"></div><div class="bud b1"></div><div class="bud b2"></div><div class="bud b3"></div>
+          <div class="leaf l1"></div><div class="leaf l2"></div><div class="leaf l3"></div><div class="leaf l4"></div>
+        </div>
+      </div>
+    </section>
+
+    <div class="progress" id="progress"></div>
+
+    <div class="footer">
+      <button class="next" id="next" type="button">Devam et</button>
+    </div>
+
+    <div class="endnote" id="endnote">Hepsi bu.</div>
+  </div>
+
+  <script>
+    (function(){
+      const scenes = Array.from(document.querySelectorAll('.scene'));
+      const nextBtn = document.getElementById('next');
+      const endnote = document.getElementById('endnote');
+      const progress = document.getElementById('progress');
+      const petalLayer = document.getElementById('petals');
+
+      let current = 0;
+      let locked = false;
+      let touchStartX = null;
+
+      // Build progress dots
+      scenes.forEach((_, i) => {
+        const dot = document.createElement('span');
+        dot.className = 'dot' + (i === 0 ? ' active' : '');
+        progress.appendChild(dot);
+      });
+
+      function updateProgress(){
+        const dots = progress.querySelectorAll('.dot');
+        dots.forEach((dot, i) => dot.classList.toggle('active', i === current));
+      }
+
+      function show(index){
+        current = index;
+        scenes.forEach((scene, i) => scene.classList.toggle('active', i === index));
+        updateProgress();
+
+        if(current === scenes.length - 2){
+          nextBtn.textContent = 'Son bir şey…';
+        }else{
+          nextBtn.textContent = 'Devam et';
+        }
+
+        if(current === scenes.length - 1){
+          nextBtn.classList.add('hide');
+          setTimeout(() => endnote.classList.add('show'), 320);
+        }else{
+          nextBtn.classList.remove('hide');
+          endnote.classList.remove('show');
+        }
+      }
+
+      function nextScene(){
+        if(locked || current >= scenes.length - 1) return;
+        locked = true;
+        show(current + 1);
+        setTimeout(() => locked = false, 320);
+      }
+
+      nextBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        nextScene();
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if(['Enter', ' ', 'ArrowRight'].includes(e.key)){
+          e.preventDefault();
+          nextScene();
+        }
+      });
+
+      document.addEventListener('touchstart', (e) => {
+        if(e.touches && e.touches.length === 1){
+          touchStartX = e.touches[0].clientX;
+        }
+      }, {passive:true});
+
+      document.addEventListener('touchend', (e) => {
+        if(touchStartX === null || !e.changedTouches || !e.changedTouches.length) return;
+        const dx = e.changedTouches[0].clientX - touchStartX;
+        touchStartX = null;
+        if(dx < -50) nextScene();
+      }, {passive:true});
+
+      // Create petals
+      const classes = ['', 'alt1', 'alt2', 'alt3'];
+      const count = 22;
+
+      for(let i = 0; i < count; i++){
+        const petal = document.createElement('span');
+        petal.className = 'petal ' + classes[Math.floor(Math.random() * classes.length)];
+        petal.style.left = Math.random() * 100 + 'vw';
+        petal.style.opacity = (0.28 + Math.random() * 0.42).toFixed(2);
+        petal.style.width = (12 + Math.random() * 10) + 'px';
+        petal.style.height = (16 + Math.random() * 12) + 'px';
+        petal.style.setProperty('--drift', (-40 + Math.random() * 80) + 'px');
+        petal.style.animationDuration = (9 + Math.random() * 9) + 's';
+        petal.style.animationDelay = (-Math.random() * 16) + 's';
+        petalLayer.appendChild(petal);
+      }
+
+      show(0);
+    })();
+  </script>
+</body>
+</html>
