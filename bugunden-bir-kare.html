@@ -1,0 +1,1997 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#352634">
+  <title>BUGÜNDEN BİR KARE</title>
+
+  <!-- Google Fonts: Playfair Display + Manrope -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      /* 3D Pearl / Mauve Palette */
+      --deep-plum: #352634;
+      --mid-mauve: #76505F;
+      --rosewood: #A96572;
+      --soft-coral: #D9958E;
+      --pearl: #F5ECEA;
+      --champagne: #D6B18A;
+      --light-glow: #FFF7F4;
+      --dark-text: #2A1F25;
+      --cinematic-dark: #21171F;
+
+      /* Typography */
+      --font-display: 'Playfair Display', Georgia, 'Times New Roman', serif;
+      --font-body: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      background-color: var(--deep-plum);
+      color: var(--pearl);
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.6;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      text-align: center;
+    }
+
+    body {
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      perspective: 1200px;
+      transform-style: preserve-3d;
+      transition: background-color 700ms ease;
+    }
+
+    /* Consistent Atmospheric Background Lighting */
+    .env-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 1;
+      background:
+        radial-gradient(ellipse at 45% 30%, var(--light-glow) 0%, rgba(245, 236, 234, 0.85) 30%, rgba(118, 80, 95, 0.5) 65%, var(--deep-plum) 100%),
+        radial-gradient(circle at 75% 15%, rgba(214, 177, 138, 0.45) 0%, transparent 50%),
+        radial-gradient(circle at 20% 80%, rgba(217, 149, 142, 0.4) 0%, transparent 55%);
+      opacity: 0.98;
+      transition: opacity 800ms ease;
+    }
+
+    /* 3D Sculptural Midground Layer */
+    .shape-layer {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 2;
+      transform-style: preserve-3d;
+      overflow: hidden;
+    }
+
+    .shape-capsule-distant {
+      position: absolute;
+      top: -6%;
+      right: -8%;
+      width: 320px;
+      height: 260px;
+      border-radius: 130px;
+      background: linear-gradient(140deg, rgba(255, 247, 244, 0.75) 0%, rgba(214, 177, 138, 0.3) 50%, rgba(118, 80, 95, 0.25) 100%);
+      backdrop-filter: blur(18px);
+      border-top: 1.5px solid rgba(255, 255, 255, 0.9);
+      border-left: 1.5px solid rgba(255, 255, 255, 0.7);
+      border-bottom: 1px solid rgba(118, 80, 95, 0.3);
+      box-shadow:
+        0 24px 50px rgba(42, 31, 37, 0.22),
+        inset 0 2px 4px rgba(255, 255, 255, 0.9),
+        inset -4px -8px 16px rgba(118, 80, 95, 0.3);
+      transform: translate3d(0, 0, -80px) rotate(-14deg);
+      animation: floatCapsule 14s ease-in-out infinite alternate;
+    }
+
+    .shape-pebble-close {
+      position: absolute;
+      bottom: -6%;
+      left: -10%;
+      width: 360px;
+      height: 280px;
+      border-radius: 140px / 110px;
+      background: linear-gradient(135deg, rgba(245, 236, 234, 0.85) 0%, rgba(169, 101, 114, 0.45) 60%, rgba(53, 38, 52, 0.4) 100%);
+      backdrop-filter: blur(14px);
+      border-top: 2px solid rgba(255, 255, 255, 0.95);
+      border-left: 1.5px solid rgba(255, 247, 244, 0.8);
+      border-bottom: 1px solid rgba(53, 38, 52, 0.4);
+      box-shadow:
+        0 30px 60px rgba(42, 31, 37, 0.3),
+        0 8px 16px rgba(118, 80, 95, 0.25),
+        inset 0 3px 6px rgba(255, 255, 255, 0.95),
+        inset -6px -12px 20px rgba(53, 38, 52, 0.4);
+      transform: translate3d(0, 0, 40px) rotate(16deg);
+      animation: floatPebble 16s ease-in-out infinite alternate;
+    }
+
+    .shape-halo-center {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 480px;
+      height: 480px;
+      margin-top: -240px;
+      margin-left: -240px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255, 247, 244, 0.55) 0%, rgba(245, 236, 234, 0.15) 55%, transparent 75%);
+      transform: translateZ(-30px);
+      transition: transform 900ms cubic-bezier(0.16, 1, 0.3, 1), opacity 900ms ease;
+    }
+
+    @keyframes floatCapsule {
+      0% { transform: translate3d(0, 0, -80px) rotate(-14deg); }
+      100% { transform: translate3d(-15px, 20px, -60px) rotate(-8deg); }
+    }
+
+    @keyframes floatPebble {
+      0% { transform: translate3d(0, 0, 40px) rotate(16deg); }
+      100% { transform: translate3d(20px, -15px, 60px) rotate(22deg); }
+    }
+
+    .fine-grain {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 3;
+      opacity: 0.035;
+      background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    }
+
+    .app-container {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transform-style: preserve-3d;
+    }
+
+    .screen {
+      display: none;
+      min-height: 100vh;
+      min-height: 100dvh;
+      width: 100%;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: env(safe-area-inset-top, 36px) 24px env(safe-area-inset-bottom, 36px) 24px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      transform-style: preserve-3d;
+    }
+
+    .screen.active {
+      display: flex;
+    }
+
+    .screen-inner {
+      width: min(88vw, 480px);
+      margin-inline: auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      transform-style: preserve-3d;
+    }
+
+    .reveal-unit {
+      opacity: 0;
+      transform: translate3d(0, 12px, 0);
+      transition: opacity 600ms cubic-bezier(0.16, 1, 0.3, 1), transform 600ms cubic-bezier(0.16, 1, 0.3, 1);
+      width: 100%;
+    }
+
+    .reveal-unit.revealed {
+      opacity: 1;
+      transform: translate3d(0, 0, 25px);
+    }
+
+    .reveal-unit.faded {
+      opacity: 0.3 !important;
+    }
+
+    .micro-note {
+      font-family: var(--font-body);
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      color: var(--mid-mauve);
+      margin-bottom: 24px;
+      text-transform: none;
+      text-shadow: 0 1px 3px rgba(255, 247, 244, 0.8);
+    }
+
+    .display-title {
+      font-family: var(--font-display);
+      font-size: 3.2rem;
+      font-weight: 400;
+      line-height: 1.08;
+      letter-spacing: -0.018em;
+      color: var(--dark-text);
+      margin-bottom: 24px;
+      text-align: center;
+      text-shadow: 0 4px 16px rgba(42, 31, 37, 0.15);
+    }
+
+    .display-title-large {
+      font-family: var(--font-display);
+      font-size: 3.6rem;
+      font-weight: 400;
+      line-height: 1.06;
+      letter-spacing: -0.02em;
+      color: var(--dark-text);
+      text-align: center;
+      text-shadow: 0 6px 20px rgba(42, 31, 37, 0.18);
+    }
+
+    .display-italic {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-weight: 400;
+    }
+
+    .body-copy {
+      font-family: var(--font-body);
+      font-size: 1.05rem;
+      font-weight: 300;
+      color: var(--dark-text);
+      line-height: 1.75;
+      text-align: center;
+    }
+
+    .body-copy p {
+      margin-bottom: 12px;
+    }
+    .body-copy p:last-child {
+      margin-bottom: 0;
+    }
+
+    /* 3D Tactile Pearl Button */
+    .btn-centered {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 54px;
+      padding: 16px 40px;
+      background: linear-gradient(145deg, #FFF9F6 0%, #F5ECEA 55%, #EEDDD5 100%);
+      color: var(--dark-text);
+      border-top: 1.5px solid rgba(255, 255, 255, 0.95);
+      border-left: 1.5px solid rgba(255, 255, 255, 0.8);
+      border-right: 1px solid rgba(217, 149, 142, 0.5);
+      border-bottom: 2px solid rgba(169, 101, 114, 0.6);
+      border-radius: 14px;
+      font-family: var(--font-body);
+      font-size: 0.94rem;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      cursor: pointer;
+      margin-top: 36px;
+      position: relative;
+      opacity: 0;
+      box-shadow:
+        0 12px 28px rgba(42, 31, 37, 0.18),
+        0 4px 10px rgba(118, 80, 95, 0.22),
+        inset 0 1.5px 2px rgba(255, 255, 255, 0.95),
+        inset 0 -2px 4px rgba(118, 80, 95, 0.15);
+      transform-style: preserve-3d;
+      transform: translate3d(0, 10px, 0);
+      pointer-events: none;
+      transition: opacity 550ms ease, transform 180ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 180ms ease, background 180ms ease;
+      backdrop-filter: blur(12px);
+      text-decoration: none;
+    }
+
+    .btn-centered.revealed {
+      opacity: 1;
+      transform: translate3d(0, 0, 30px);
+      pointer-events: auto;
+    }
+
+    .btn-centered:hover,
+    .btn-centered:focus-visible {
+      transform: translate3d(0, -2px, 35px);
+      background: linear-gradient(145deg, #FFFFFF 0%, #FFF7F4 50%, #F5ECEA 100%);
+      color: var(--rosewood);
+      box-shadow:
+        0 16px 36px rgba(169, 101, 114, 0.24),
+        0 6px 14px rgba(42, 31, 37, 0.18),
+        inset 0 2px 3px #FFFFFF,
+        inset 0 -2px 4px rgba(169, 101, 114, 0.2);
+      outline: none;
+    }
+
+    .btn-centered:active {
+      transform: translate3d(0, 3px, 15px) scale(0.985);
+      box-shadow:
+        0 4px 12px rgba(42, 31, 37, 0.12),
+        inset 0 1px 2px rgba(255, 255, 255, 0.7),
+        inset 0 -1px 2px rgba(118, 80, 95, 0.1);
+    }
+
+    .btn-secondary {
+      background: linear-gradient(145deg, rgba(245, 236, 234, 0.75) 0%, rgba(238, 217, 204, 0.5) 100%);
+      border-top: 1.5px solid rgba(255, 255, 255, 0.8);
+      border-bottom: 2px solid rgba(118, 80, 95, 0.35);
+      color: var(--mid-mauve);
+      box-shadow:
+        0 8px 22px rgba(42, 31, 37, 0.1),
+        inset 0 1px 2px rgba(255, 255, 255, 0.8);
+    }
+
+    .beat-container {
+      margin: 32px 0;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      transform-style: preserve-3d;
+    }
+
+    .ya-da-sen-beat {
+      font-family: var(--font-display);
+      font-size: 3.8rem;
+      font-style: italic;
+      font-weight: 400;
+      color: var(--rosewood);
+      letter-spacing: -0.015em;
+      text-align: center;
+      text-shadow: 0 8px 28px rgba(169, 101, 114, 0.3);
+      transition: transform 900ms cubic-bezier(0.16, 1, 0.3, 1), opacity 900ms ease;
+    }
+
+    .ya-da-sen-beat.revealed {
+      transform: translate3d(0, 0, 50px) scale(1.05);
+    }
+
+    .choice-stack {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      gap: 16px;
+      margin-top: 24px;
+      transform-style: preserve-3d;
+    }
+
+    .choice-slab {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      padding: 22px 24px;
+      background: linear-gradient(145deg, rgba(255, 247, 244, 0.92) 0%, rgba(245, 236, 234, 0.8) 100%);
+      border-top: 1.5px solid rgba(255, 255, 255, 0.9);
+      border-left: 1.5px solid rgba(255, 255, 255, 0.7);
+      border-right: 1px solid rgba(214, 177, 138, 0.4);
+      border-bottom: 2px solid rgba(169, 101, 114, 0.45);
+      border-radius: 16px;
+      box-shadow:
+        0 14px 34px rgba(42, 31, 37, 0.14),
+        inset 0 1.5px 2px rgba(255, 255, 255, 0.9),
+        inset 0 -2px 4px rgba(118, 80, 95, 0.12);
+      backdrop-filter: blur(14px);
+      cursor: pointer;
+      text-align: center;
+      transition: transform 220ms ease, border-color 220ms ease, box-shadow 220ms ease;
+    }
+
+    .choice-slab-1 { transform: rotateY(-2deg) rotateX(1deg) translateZ(25px); }
+    .choice-slab-2 { transform: rotateY(0deg) translateZ(30px); }
+    .choice-slab-3 { transform: rotateY(2deg) rotateX(-1deg) translateZ(25px); }
+
+    .choice-slab:hover,
+    .choice-slab:focus-visible {
+      transform: translate3d(0, -4px, 40px) rotateY(0deg);
+      border-color: var(--rosewood);
+      box-shadow:
+        0 18px 44px rgba(169, 101, 114, 0.22),
+        inset 0 2px 3px #FFFFFF;
+      outline: none;
+    }
+
+    .choice-num {
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      font-weight: 400;
+      color: var(--champagne);
+      margin-bottom: 2px;
+      text-shadow: 0 2px 8px rgba(214, 177, 138, 0.35);
+    }
+
+    .choice-title {
+      font-family: var(--font-body);
+      font-size: 0.92rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--dark-text);
+      margin-bottom: 2px;
+    }
+
+    .choice-desc {
+      font-size: 0.86rem;
+      color: var(--mid-mauve);
+      font-weight: 400;
+    }
+
+    .photo-placeholder {
+      width: 250px;
+      height: 310px;
+      border-top: 1.5px solid rgba(255, 255, 255, 0.9);
+      border-left: 1.5px solid rgba(255, 255, 255, 0.7);
+      border-right: 1px solid rgba(217, 149, 142, 0.5);
+      border-bottom: 2px solid rgba(169, 101, 114, 0.6);
+      border-radius: 16px;
+      background: linear-gradient(145deg, rgba(255, 247, 244, 0.92) 0%, rgba(245, 236, 234, 0.75) 100%);
+      backdrop-filter: blur(14px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      cursor: pointer;
+      margin: 24px auto;
+      box-shadow:
+        0 16px 40px rgba(42, 31, 37, 0.16),
+        inset 0 1.5px 3px rgba(255, 255, 255, 0.9);
+      transition: border-color 200ms ease, transform 200ms ease, box-shadow 200ms ease;
+      transform: translateZ(25px);
+    }
+
+    .photo-placeholder:hover {
+      border-color: var(--soft-coral);
+      transform: translateZ(35px);
+      box-shadow: 0 20px 48px rgba(169, 101, 114, 0.22);
+    }
+
+    .photo-plus {
+      font-family: var(--font-display);
+      font-size: 2.5rem;
+      color: var(--rosewood);
+      line-height: 1;
+    }
+
+    .photo-preview-img {
+      width: 250px;
+      max-height: 330px;
+      object-fit: cover;
+      border-radius: 14px;
+      box-shadow: 0 20px 50px rgba(42, 31, 37, 0.3);
+      margin: 20px auto;
+      display: none;
+      transform: translateZ(40px) rotate(-1deg);
+    }
+
+    .file-input-hidden {
+      position: absolute;
+      opacity: 0;
+      width: 0.1px;
+      height: 0.1px;
+      overflow: hidden;
+      z-index: -1;
+    }
+
+    #screen-cinematic {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: var(--cinematic-dark);
+      color: var(--light-glow);
+      z-index: 100;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 32px;
+      opacity: 0;
+      transition: opacity 700ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    #screen-cinematic.active {
+      display: flex;
+      opacity: 1;
+    }
+
+    #screen-cinematic .display-title-large {
+      color: var(--light-glow);
+      text-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .status-msg {
+      font-size: 0.88rem;
+      margin-top: 16px;
+      min-height: 24px;
+      color: var(--mid-mauve);
+      text-align: center;
+    }
+    .status-msg.error {
+      color: var(--rosewood);
+    }
+
+    .epilogue-container {
+      margin-top: 36px;
+      font-size: 0.92rem;
+      color: var(--mid-mauve);
+      line-height: 1.7;
+    }
+
+    /* Developer Toolbar (Localhost Only) */
+    #dev-toolbar {
+      position: fixed;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 999;
+      background: rgba(33, 23, 31, 0.92);
+      border: 1px solid rgba(217, 149, 142, 0.5);
+      border-radius: 10px;
+      padding: 6px 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.75rem;
+      color: #FFF7F4;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+      backdrop-filter: blur(8px);
+    }
+
+    #dev-toolbar button {
+      background: var(--rosewood);
+      color: #FFF;
+      border: none;
+      padding: 4px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.72rem;
+      font-family: var(--font-body);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, .shape-capsule-distant, .shape-pebble-close, .reveal-unit, .btn-centered, #screen-cinematic {
+        transition: none !important;
+        animation: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Ambient Background Lighting Layer -->
+  <div class="env-bg" id="env-bg" aria-hidden="true"></div>
+
+  <!-- 3D Sculptural Midground Layer -->
+  <div class="shape-layer" aria-hidden="true">
+    <div class="shape-capsule-distant" id="shape-capsule"></div>
+    <div class="shape-pebble-close" id="shape-pebble"></div>
+    <div class="shape-halo-center" id="shape-halo"></div>
+  </div>
+
+  <!-- Fine Grain Layer -->
+  <div class="fine-grain" aria-hidden="true"></div>
+
+  <div class="app-container" id="app-container">
+
+    <!-- SCREEN 1: COVER OPENING -->
+    <section id="screen-1" class="screen active" aria-labelledby="title-screen-1">
+      <div class="screen-inner" id="inner-screen-1">
+        <div class="reveal-unit micro-note">bugün için küçük bir şey</div>
+        <h1 id="title-screen-1" class="reveal-unit display-title">
+          BUGÜNDEN<br>BİR KARE
+        </h1>
+        <div class="body-copy">
+          <p class="reveal-unit">Bazen güzel bir şeyi fark etmek için</p>
+          <p class="reveal-unit">sadece biraz daha dikkatli bakmak yeter.</p>
+        </div>
+        <button type="button" class="btn-centered" id="btn-screen-1" onclick="handleNavigation(2)">Görevi gör</button>
+      </div>
+    </section>
+
+    <!-- SCREEN 2: TASK INTRO -->
+    <section id="screen-2" class="screen" aria-labelledby="title-screen-2">
+      <div class="screen-inner" id="inner-screen-2">
+        <div class="body-copy" style="margin-bottom: 20px;" id="task-intro-box">
+          <p class="reveal-unit" id="task-intro-1">Bugün gözünün takıldığı,</p>
+          <p class="reveal-unit" id="task-intro-2">sana güzel gelen bir şeyi</p>
+          <p class="reveal-unit" id="task-intro-3">fotoğraflamanı istiyorum.</p>
+        </div>
+
+        <div class="body-copy" id="example-pack" style="color: var(--mid-mauve);">
+          <p class="reveal-unit example-item" id="task-ex-1">Gökyüzü olabilir.</p>
+          <p class="reveal-unit example-item" id="task-ex-2">Bir sokak olabilir.</p>
+          <p class="reveal-unit example-item" id="task-ex-3">Bir kahve, bir kedi, bir gölge…</p>
+        </div>
+
+        <div class="beat-container">
+          <div class="reveal-unit ya-da-sen-beat" id="beat-unit">YA DA SEN.</div>
+        </div>
+
+        <div class="body-copy">
+          <p class="reveal-unit" id="task-closing">Neyi güzel bulduğuna sen karar ver.</p>
+        </div>
+
+        <button type="button" class="btn-centered" id="btn-screen-2" onclick="handleNavigation(3)">Tamam, aklımda</button>
+      </div>
+    </section>
+
+    <!-- SCREEN 3: QUESTION & OBSERVATION -->
+    <section id="screen-3" class="screen" aria-labelledby="title-screen-3">
+      <div class="screen-inner" id="inner-screen-3">
+        <div id="question-intro-view" style="width: 100%;">
+          <div class="body-copy" style="margin-bottom: 24px;">
+            <p class="reveal-unit">Güzel bir şey aramana gerek yok.</p>
+            <p class="reveal-unit">Fark ettiğinde zaten anlarsın.</p>
+          </div>
+
+          <h2 id="title-screen-3" class="reveal-unit display-title" style="font-size: 2.4rem; margin-bottom: 24px;">
+            Kareyi yakaladın mı?
+          </h2>
+
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 12px; width: 100%;">
+            <button type="button" class="btn-centered" id="btn-screen-3-yes" onclick="handleNavigation(4)">Evet, çektim</button>
+            <button type="button" class="btn-centered btn-secondary" id="btn-screen-3-notyet" onclick="showNotYetView()">Henüz değil</button>
+          </div>
+        </div>
+
+        <!-- Waiting View ("Henüz değil") -->
+        <div id="waiting-view" style="display: none; width: 100%; flex-direction: column; align-items: center;">
+          <h2 class="reveal-unit display-title" style="font-size: 2.4rem; margin-bottom: 16px;">
+            Acele etme.
+          </h2>
+          <div class="body-copy" style="margin-bottom: 24px;">
+            <p class="reveal-unit">Güzel bir şey gördüğünde</p>
+            <p class="reveal-unit">burası hâlâ burada.</p>
+          </div>
+          <button type="button" class="btn-centered btn-secondary" id="btn-waiting-return" onclick="resetNotYetView()">Geri dön</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCREEN 4: CHOICE SCREEN -->
+    <section id="screen-4" class="screen" aria-labelledby="title-screen-4">
+      <div class="screen-inner" id="inner-screen-4">
+        <h2 id="title-screen-4" class="reveal-unit display-title" style="font-size: 2.2rem; margin-bottom: 16px;">
+          Peki bu kare ne olsun?
+        </h2>
+
+        <div class="choice-stack">
+          <button type="button" class="reveal-unit choice-slab choice-slab-1" onclick="handleChoiceUpload()">
+            <span class="choice-num">01</span>
+            <span class="choice-title">BURAYA BIRAKACAĞIM</span>
+            <span class="choice-desc">İstersen fotoğrafı buradan paylaş.</span>
+          </button>
+
+          <button type="button" class="reveal-unit choice-slab choice-slab-2" onclick="handleSendToMeChoice()">
+            <span class="choice-num">02</span>
+            <span class="choice-title">SANA GÖNDERECEĞİM</span>
+            <span class="choice-desc">Nasıl göndereceğine sen karar ver.</span>
+          </button>
+
+          <button type="button" class="reveal-unit choice-slab choice-slab-3" onclick="handleEventAction('keep_private')">
+            <span class="choice-num">03</span>
+            <span class="choice-title">KENDİME SAKLAYACAĞIM</span>
+            <span class="choice-desc">Bazı kareler sadece sahibinde kalmalı.</span>
+          </button>
+        </div>
+
+        <div class="status-msg" id="screen-4-status"></div>
+      </div>
+    </section>
+
+    <!-- SCREEN SEND METHOD (Sub-choice for SANA GÖNDERECEĞİM) -->
+    <section id="screen-send-method" class="screen" aria-labelledby="title-screen-send-method">
+      <div class="screen-inner" id="inner-screen-send-method">
+        <div class="body-copy">
+          <h2 class="reveal-unit display-title" style="font-size: 2.2rem; margin-bottom: 16px;">Nasıl istersen.</h2>
+          <p class="reveal-unit" style="margin-top: 14px;">İstersen buradan gönder,</p>
+          <p class="reveal-unit">istersen WhatsApp'tan.</p>
+        </div>
+
+        <div class="choice-stack" id="send-method-choices" style="margin-top: 24px;">
+          <button type="button" class="reveal-unit btn-centered" onclick="handleSendViaUpload()" style="width: 100%; max-width: 320px;">
+            Buradan gönder
+          </button>
+          <button type="button" class="reveal-unit btn-centered btn-secondary" id="btn-whatsapp" onclick="handleSendViaWhatsApp()" style="width: 100%; max-width: 320px; margin-top: 10px;">
+            WhatsApp'tan gönder
+          </button>
+        </div>
+
+        <div id="whatsapp-fallback" style="display: none;">
+          <div class="body-copy">
+            <h2 class="reveal-unit display-title" style="font-size: 2rem; margin-bottom: 16px;">WhatsApp açılamadı.</h2>
+            <p class="reveal-unit" style="margin-top: 14px;">İstersen tekrar deneyebilirsin.</p>
+          </div>
+          <button type="button" class="reveal-unit btn-centered" id="btn-whatsapp-retry" onclick="retryWhatsApp()" style="width: 100%; max-width: 320px; margin-top: 24px;">
+            WhatsApp'ı tekrar aç
+          </button>
+        </div>
+
+        <div class="status-msg" id="send-method-status"></div>
+      </div>
+    </section>
+
+    <!-- SCREEN UPLOAD -->
+    <section id="screen-upload" class="screen" aria-labelledby="title-screen-upload">
+      <div class="screen-inner" id="inner-screen-upload">
+        <div class="body-copy">
+          <p class="reveal-unit">O zaman kareyi</p>
+          <h2 class="reveal-unit display-title" style="font-size: 2.2rem; margin-top: 4px; margin-bottom: 20px;">
+            buraya bırak.
+          </h2>
+        </div>
+
+        <div class="reveal-unit" id="photo-box-unit" style="width: 100%;">
+          <div class="photo-placeholder" id="photo-placeholder" onclick="triggerFileSelect()">
+            <span class="photo-plus">+</span>
+            <span class="choice-desc" style="font-weight: 500; color: var(--dark-text);">Fotoğraf seç</span>
+          </div>
+          <input type="file" id="photo-file" class="file-input-hidden" accept="image/*" onchange="handleFileSelected(this)">
+          <img id="preview-img" class="photo-preview-img" alt="Seçilen Fotoğraf">
+        </div>
+
+        <div id="upload-actions" style="display: none; flex-direction: column; align-items: center; gap: 10px; width: 100%;">
+          <p class="micro-note" style="margin-bottom: 4px;">Bu mu?</p>
+          <button type="button" class="btn-centered" id="btn-submit-photo" style="margin-top: 0;" onclick="submitPhoto()">Bu kareyi bırak</button>
+          <button type="button" class="btn-centered btn-secondary" style="margin-top: 0;" onclick="triggerFileSelect()">Başka bir tane seç</button>
+        </div>
+
+        <div class="status-msg" id="upload-status" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <!-- SCREEN FEEDBACK -->
+    <section id="screen-feedback" class="screen" aria-labelledby="title-screen-feedback">
+      <div class="screen-inner" id="inner-screen-feedback">
+        <div class="body-copy" id="feedback-copy-container">
+          <!-- Dynamic feedback units -->
+        </div>
+      </div>
+    </section>
+
+    <!-- SCREEN FINAL SEQUENCE & EPILOGUE -->
+    <section id="screen-final" class="screen" aria-labelledby="title-screen-final">
+      <div class="screen-inner" id="inner-screen-final">
+        <div class="body-copy" id="final-seq-container">
+          <p class="reveal-unit">Sen bir kare seçtin.</p>
+          <p class="reveal-unit">Ben de gördüğüm</p>
+          <p class="reveal-unit display-title" style="font-size: 2.2rem; margin: 12px 0;">
+            <span class="display-italic" style="color: var(--rosewood);">en güzel şeyi</span>
+          </p>
+          <p class="reveal-unit">seninle paylaşacağım.</p>
+        </div>
+
+        <div id="final-end-container" style="display: none; flex-direction: column; align-items: center; width: 100%;">
+          <h2 class="display-title-large" id="gerisini-bana-birak-title">
+            GERİSİNİ<br><span class="display-italic" style="color: var(--rosewood); transform: translateZ(35px); display: inline-block;">BANA BIRAK.</span>
+          </h2>
+
+          <div class="epilogue-container" id="epilogue-container">
+            <p class="reveal-unit epilogue-line" style="margin-bottom: 12px;">Canın ne zaman isterse burası burada.</p>
+            <p class="reveal-unit epilogue-line" style="margin-bottom: 12px; font-size: 0.88rem; max-width: 360px; margin-inline: auto;">
+              Kafanı biraz dağıtmak,<br>başka bir şeye bakmak<br>ya da sadece küçük bir güzellik fark etmek istediğinde<br>tekrar gelebilirsin.
+            </p>
+            <p class="reveal-unit epilogue-line" style="font-weight: 500; color: var(--dark-text); margin-top: 14px;">Yine bir kare buluruz.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- DARK CINEMATIC INTERRUPTION -->
+  <div id="screen-cinematic" aria-live="polite">
+    <div class="reveal-unit display-title-large" id="cinematic-unit-1">ŞİMDİ</div>
+    <div class="reveal-unit display-title-large" id="cinematic-unit-2" style="margin-top: 12px;">SIRA BENDE.</div>
+  </div>
+
+
+
+  <script>
+    // =========================================================================
+    // PROCEDURAL TASK GENERATOR DATA ARCHITECTURE (26 Semantic Families)
+    // =========================================================================
+    const TASK_FAMILIES = {
+      LIGHT: {
+        code: "LGHT",
+        summary: "Işık kırılması yakala",
+        intros: [
+          ["Bugün ışığın bir yere düşüşünü,", "sana huzur veren bir parıltıyı", "fotoğraflamanı istiyorum."],
+          ["Bugün bir pencereden süzülen,", "günün yumuşak bir anını", "fotoğraflamanı istiyorum."],
+          ["Bugün ortamı aydınlatan,", "gözüne parlak gelen bir şeyi", "fotoğraflamanı istiyorum."]
+        ],
+        examples: [
+          ["Bir cam yansıması olabilir.", "Perde arasından sızan ışık olabilir.", "Bir abajur ateşi olabilir…"],
+          ["Yapraklar arasından geçen güneş olabilir.", "Su üstündeki parıltı olabilir.", "Bir mum ışığı olabilir…"]
+        ],
+        closings: ["Işığın nereden geldiğine sen karar ver.", "Nereyi aydınlattığına sen bak."]
+      },
+      SHADOW: {
+        code: "SHDW",
+        summary: "Bir gölge yakala",
+        intros: [
+          ["Bugün yere ya da duvara düşen,", "sessiz bir gölgeyi", "fotoğraflamanı istiyorum."],
+          ["Bugün ışığın arkasında kalan,", "derin bir formu", "fotoğraflamanı istiyorum."]
+        ],
+        examples: [
+          ["Bir ağaç gölgesi olabilir.", "Kendi silüetin olabilir.", "Bir fincanın duvardaki izi olabilir…"],
+          ["Kaldırımdaki çizgi olabilir.", "Pencere parmaklığı gölgesi olabilir.", "Sessiz bir köşe olabilir…"]
+        ],
+        closings: ["Gölgene sen karar ver.", "Hangi formu seçtiğine sen bak."]
+      },
+      REFLECTION: {
+        code: "REFL",
+        summary: "Bir yansıma yakala",
+        intros: [
+          ["Bugün bir yüzeyde beliren,", "başka bir dünyanın aksini", "fotoğraflamanı istiyorum."],
+          ["Bugün bakınca içinde başka şey gördüğün", "parlak bir yansımayı", "fotoğraflamanı istiyorum."]
+        ],
+        examples: [
+          ["Bir su birikintisi olabilir.", "Araba camı olabilir.", "Bir dikiz aynası olabilir…"],
+          ["Gözlük camı olabilir.", "Bir vitrin aynası olabilir.", "Parlak bir çaydanlık olabilir…"]
+        ],
+        closings: ["Yansıyan şeye sen karar ver.", "Kareyi nasıl açıladığına sen bak."]
+      },
+      COLOR: {
+        code: "COLR",
+        summary: "Canlı bir renk yakala",
+        intros: [
+          ["Bugün etraftaki gri dünyada", "birden gözüne çarpan renkli bir şeyi", "fotoğraflamanı istiyorum."]
+        ],
+        examples: [
+          ["Kırmızı bir kapı olabilir.", "Sarı bir çiçek olabilir.", "Mavi bir boya izi olabilir…"]
+        ],
+        closings: ["Hangi rengi seçtiğine sen karar ver."]
+      },
+      MOVEMENT: {
+        code: "MOVT",
+        summary: "Hareket anı yakala",
+        intros: [
+          ["Bugün bir anlığına kıpırdayan,", "akıp giden bir hareketi", "fotoğraflamanı istiyorum."]
+        ],
+        examples: [
+          ["Uçan bir kuş olabilir.", "Rüzgarda sallanan dal olabilir.", "Geçen bir bisikletli olabilir…"]
+        ],
+        closings: ["Anı ne zaman durduracağına sen karar ver."]
+      },
+      QUIET: {
+        code: "QUIET",
+        summary: "Sakin bir köşe yakala",
+        intros: [
+          ["Bugün günün karmaşasında", "sana tek bir saniye durma hissi veren", "sakin bir şeyi fotoğraflamanı istiyorum."]
+        ],
+        examples: [
+          ["Boş bir bank olabilir.", "Yalnız kalmış bir sandalye olabilir.", "Sessiz bir köşe olabilir…"]
+        ],
+        closings: ["Sessizliğin nerede olduğuna sen karar ver."]
+      },
+      DETAIL: {
+        code: "DETL",
+        summary: "Küçük bir detay yakala",
+        intros: [
+          ["Bugün kimsenin fark etmediği,", "küçük bir detayı", "fotoğraflamanı istiyorum."]
+        ],
+        examples: [
+          ["Duvardaki küçük bir çatlak olabilir.", "Bir desen olabilir.", "Bir anahtarlık detay olabilir…"]
+        ],
+        closings: ["Neye yakından baktığına sen karar ver."]
+      },
+      TEXTURE: {
+        code: "TEXT",
+        summary: "Dokulu bir yüzey yakala",
+        intros: [
+          ["Bugün dokusunu hissetmek istediğin,", "yüzeyi özel bir şeyi", "fotoğraflamanı istiyorum."]
+        ],
+        examples: [
+          ["Eski bir ahşap dokusu olabilir.", "Taş bir duvar olabilir.", "Örgü bir kumaş olabilir…"]
+        ],
+        closings: ["Dokuyu sen seç."]
+      },
+      CONTRAST: {
+        code: "CNTR",
+        summary: "Karşıtlık yakala",
+        intros: [
+          ["Bugün yan yana gelmiş iki zıt şeyi,", "bir tezat anını", "fotoğraflamanı istiyorum."]
+        ],
+        examples: [
+          ["Beton arasından çıkan papatya olabilir.", "Eski ile yeni yan yana olabilir.", "Sert ve yumuşak doku olabilir…"]
+        ],
+        closings: ["Tezadı nerede bulduğuna sen karar ver."]
+      },
+      SYMMETRY: {
+        code: "SYMM",
+        summary: "Simetrik bir form yakala",
+        intros: [
+          ["Bugün dengeli duran,", "simetrik bir çizgiyi", "fotoğraflamanı istiyorum."]
+        ],
+        examples: [
+          ["Ortadan bölünen bir koridor olabilir.", "Hizalı iki pencere olabilir.", "Bir yaprağın damarları olabilir…"]
+        ],
+        closings: ["Dengeyi sen seç."]
+      },
+      COMFORT: {
+        code: "COMF",
+        summary: "Sıcak bir his yakala",
+        intros: [
+          ["Bugün sana içten bir sıcaklık veren,", "rahat bir anı", "fotoğraflamanı istiyorum."]
+        ],
+        examples: [
+          ["Buharı tüten bir bardak olabilir.", "Yumuşak bir battaniye olabilir.", "Sıcak bir odanın köşesi olabilir…"]
+        ],
+        closings: ["Neyin için ısıttığına sen karar ver."]
+      },
+      SURPRISE: {
+        code: "SURP",
+        summary: "Beklenmedik bir detay yakala",
+        intros: [
+          ["Bugün karşına aniden çıkan,", "seni bir an şaşırtan bir şeyi", "fotoğraflamanı istiyorum."]
+        ],
+        examples: [
+          ["Kaldırımda unutulmuş bir oyuncak olabilir.", "İlginç bir tabela olabilir.", "Duvara çizilmiş tatlı bir resim olabilir…"]
+        ],
+        closings: ["Sürprizi nerede gördüğüne sen bak."]
+      },
+      SMILE: {
+        code: "SMIL",
+        summary: "Gülümseten bir detay yakala",
+        intros: [
+          ["Bugün yüzünde hafif bir tebessüm oluşturan", "tatlı bir detayı", "fotoğraflamanı istiyorum."]
+        ],
+        examples: [
+          ["Güneşte uyuyan bir kedi olabilir.", "Komik bir yazı olabilir.", "Bir çocuğun adımı olabilir…"]
+        ],
+        closings: ["Neye gülümsediğine sen karar ver."]
+      },
+      CLOSE_UP: {
+        code: "CLOS",
+        summary: "Yakın çekim bir kare yakala",
+        intros: [
+          ["Bugün kadrajı iyice yaklaştırıp", "objenin özünü gösteren bir kareyi", "fotoğraflamanı istiyorum."]
+        ],
+        examples: [
+          ["Bir kahve çekirdeği olabilir.", "Çiçek taç yaprağı olabilir.", "Saat kadranı olabilir…"]
+        ],
+        closings: ["Ne kadar yaklaşacağına sen karar ver."]
+      },
+      PERSPECTIVE: {
+        code: "PERSP",
+        summary: "Farklı bir açı yakala",
+        intros: [
+          ["Bugün alışılmadık bir açıdan,", "aşağıdan ya da yukarıdan bakarak", "bir kare fotoğraflamanı istiyorum."]
+        ],
+        examples: [
+          ["Yukarı doğru uzanan bir bina olabilir.", "Aşağı bakan bir merdiven olabilir.", "Gökyüzüne açılan bir ağaç tepesi olabilir…"]
+        ],
+        closings: ["Hangi açıdan baktığına sen karar ver."]
+      },
+      SILHOUETTE: {
+        code: "SILH",
+        summary: "Silüet yakala",
+        intros: [
+          ["Bugün arkasındaki ışıkla büyüleyen", "koyu bir silüeti", "fotoğraflamanı istiyorum."]
+        ],
+        examples: [
+          ["Gün batımında bir figür olabilir.", "Pencere önünde saksı olabilir.", "Çatı çizgisi olabilir…"]
+        ],
+        closings: ["Silüetin kime ait olduğuna sen karar ver."]
+      },
+      SINGLE_OBJECT: {
+        code: "SNGL",
+        summary: "Tek bir obje yakala",
+        intros: [
+          ["Bugün kadrajda tek başına duran,", "sade bir objeyi", "fotoğraflamanı istiyorum."]
+        ],
+        examples: [
+          ["Masadaki tek bir elma olabilir.", "Askıda duran bir ceket olabilir.", "Yolda duran bir bisiklet olabilir…"]
+        ],
+        closings: ["Hangi objeyi seçtiğine sen bak."]
+      },
+      MEMORY: {
+        code: "MEMO",
+        summary: "Anı hatırlatan bir kare yakala",
+        intros: [
+          ["Bugün sana eski güzel bir anıyı hatırlatan", "tanıdık bir şeyi", "fotoğraflamanı istiyorum."]
+        ],
+        examples: [
+          ["Eski bir kitap kapağı olabilir.", "Nostaljik bir saat olabilir.", "Bir sokak lambası olabilir…"]
+        ],
+        closings: ["Seni nereye götürdüğüne sen karar ver."]
+      },
+      UNNOTICED_DETAIL: {
+        code: "UNOT",
+        summary: "Fark edilmeyen güzellik yakala",
+        intros: [
+          ["Bugün yanından her gün geçilip gidilen", "ama görünce büyüleyen bir detayı", "fotoğraflamanı istiyorum."]
+        ],
+        examples: [
+          ["Tarihi bir kapı tokmağı olabilir.", "Kaldırım taşı deseni olabilir.", "Eski bir tabela izi olabilir…"]
+        ],
+        closings: ["Fark ettiğin anı sen seç."]
+      },
+      ORDINARY_BEAUTY: {
+        code: "ORDB",
+        summary: "Sıradan bir güzellik yakala",
+        intros: [
+          ["Bugün en sıradan anın içindeki", "estetik bir kareyi", "fotoğraflamanı istiyorum."]
+        ],
+        examples: [
+          ["Dağınık bir masa üstü olabilir.", "Bulaşık kuruması olabilir.", "Katlanmış giysiler olabilir…"]
+        ],
+        closings: ["Güzelliği nerede bulduğuna sen bak."]
+      },
+      SHAPES: {
+        code: "SHAP",
+        summary: "Geometrik bir biçim yakala",
+        intros: [
+          ["Bugün etrafındaki mimari ya da doğal", "geometrik bir biçimi", "fotoğraflamanı istiyorum."]
+        ],
+        examples: [
+          ["Yuvarlak bir pencere olabilir.", "Üçgen bir çatı kesiti olabilir.", "Kare kiremitler olabilir…"]
+        ],
+        closings: ["Biçimi sen seç."]
+      },
+      EMPTY_SPACE: {
+        code: "EMPT",
+        summary: "Ferah bir boşluk yakala",
+        intros: [
+          ["Bugün kadrajın büyük kısmını boş bırakan", "ferah bir kareyi", "fotoğraflamanı istiyorum."]
+        ],
+        examples: [
+          ["Mavi açık gökyüzü olabilir.", "Beyaz boş bir duvar olabilir.", "Sonsuz görünen bir yol olabilir…"]
+        ],
+        closings: ["Boşluğun tadına sen karar ver."]
+      },
+      COINCIDENCE: {
+        code: "COIN",
+        summary: "Bir denk geliş yakala",
+        intros: [
+          ["Bugün tesadüfen bir araya gelmiş", "güzel bir denk gelişi", "fotoğraflamanı istiyorum."]
+        ],
+        examples: [
+          ["İki farklı rengin buluşması olabilir.", "Aynı hizada iki nesne olabilir.", "Kuşun tabelaya konması olabilir…"]
+        ],
+        closings: ["Denk gelişe sen karar ver."]
+      },
+      ATMOSPHERE: {
+        code: "ATMS",
+        summary: "Havadar bir atmosfer yakala",
+        intros: [
+          ["Bugün içinde bulunduğun havanın duygusunu", "yansıtan bir atmosferi", "fotoğraflamanı istiyorum."]
+        ],
+        examples: [
+          ["Sisli bir sabah olabilir.", "Yağmur sonrası ıslak zemin olabilir.", "Akşamüstü kızıllığı olabilir…"]
+        ],
+        closings: ["Hangi atmosferi seçeceğine sen bak."]
+      },
+      NATURE: {
+        code: "NATR",
+        summary: "Doğadan bir kare yakala",
+        intros: [
+          ["Bugün şehrin içinde bile olsa", "doğanın bir izini", "fotoğraflamanı istiyorum."]
+        ],
+        examples: [
+          ["Asfalttan çıkan bir yeşillik olabilir.", "Saksıda yeni açmış bir yaprak olabilir.", "Ağaç kabuğu dokusu olabilir…"]
+        ],
+        closings: ["Doğayı nerede bulduğuna sen karar ver."]
+      },
+      URBAN_DETAIL: {
+        code: "URBN",
+        summary: "Şehir içi bir detay yakala",
+        intros: [
+          ["Bugün şehir hayatının içinden", "zarif bir köşe detayını", "fotoğraflamanı istiyorum."]
+        ],
+        examples: [
+          ["Bir sokak lambasının duruşu olabilir.", "Bir bina köşesi olabilir.", "Otobüs durağı camı olabilir…"]
+        ],
+        closings: ["Şehrin hangi yüzünü seçtiğine sen bak."]
+      }
+    };
+
+    // Immutable First Task Definition
+    const FIRST_RITUAL_DEFINITION = {
+      isFirstRitual: true,
+      taskCode: "ORIGINAL-FIRST-RITUAL",
+      taskSummary: "Gözünün takıldığı bir şey",
+      intro: [
+        "Bugün gözünün takıldığı,",
+        "sana güzel gelen bir şeyi",
+        "fotoğraflamanı istiyorum."
+      ],
+      examples: [
+        "Gökyüzü olabilir.",
+        "Bir sokak olabilir.",
+        "Bir kahve, bir kedi, bir gölge…"
+      ],
+      closing: "Neyi güzel bulduğuna sen karar ver."
+    };
+
+    // =========================================================================
+    // STATE ENGINE & LOCALSTORAGE MANAGEMENT
+    // =========================================================================
+    const CONFIG = {
+      API_BASE_URL: "https://bugunden-bir-kare-api.nexsus-agent.workers.dev"
+    };
+
+    let currentScreenNum = 1;
+    let revealUnits = [];
+    let currentRevealIndex = 0;
+    let revealTimer = null;
+    let isSubmitting = false;
+    let selectedFileBlob = null;
+    let activeRitualState = null;
+
+    const isMock = (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") &&
+                   (window.location.search.includes("mock=1") || window.location.search.includes("devTasks=1") || CONFIG.API_BASE_URL.includes("REPLACE_WITH_CLOUDFLARE_WORKER_URL"));
+
+    document.addEventListener("DOMContentLoaded", () => {
+      // Setup tap acceleration listener
+      document.getElementById("app-container").addEventListener("click", (e) => {
+        if (e.target.closest("button") || e.target.closest(".choice-slab") || e.target.closest(".photo-placeholder") || e.target.closest("input")) {
+          return;
+        }
+        accelerateReveal();
+      });
+
+      // Developer mode check
+      checkDevToolbar();
+
+      // Initialize or Restore State
+      initRitualState();
+    });
+
+    function initRitualState() {
+      const savedActive = localStorage.getItem("bg_active_ritual");
+      const firstCompleted = localStorage.getItem("bg_first_ritual_completed") === "true";
+
+      if (savedActive) {
+        try {
+          activeRitualState = JSON.parse(savedActive);
+        } catch (e) {
+          activeRitualState = null;
+        }
+      }
+
+      if (!activeRitualState) {
+        if (!firstCompleted) {
+          activeRitualState = {
+            version: 1,
+            isFirstRitual: true,
+            taskCode: FIRST_RITUAL_DEFINITION.taskCode,
+            taskSummary: FIRST_RITUAL_DEFINITION.taskSummary,
+            taskDefinition: FIRST_RITUAL_DEFINITION,
+            stage: "OPENING"
+          };
+        } else {
+          const generatedDef = generateProceduralTask();
+          activeRitualState = {
+            version: 1,
+            isFirstRitual: false,
+            taskCode: generatedDef.taskCode,
+            taskSummary: generatedDef.taskSummary,
+            taskDefinition: generatedDef,
+            stage: "OPENING"
+          };
+        }
+        saveActiveRitualState();
+      }
+
+      applyTaskToDOM(activeRitualState.taskDefinition);
+      updateDevToolbarInfo();
+
+      // Navigate to saved stage
+      restoreSavedStage(activeRitualState.stage);
+    }
+
+    function saveActiveRitualState() {
+      if (activeRitualState) {
+        localStorage.setItem("bg_active_ritual", JSON.stringify(activeRitualState));
+      }
+      updateDevToolbarInfo();
+    }
+
+    function markRitualCompleted() {
+      if (!activeRitualState) return;
+
+      const code = activeRitualState.taskCode;
+      let completedCodes = [];
+      try {
+        completedCodes = JSON.parse(localStorage.getItem("bg_completed_task_codes") || "[]");
+      } catch (e) {
+        completedCodes = [];
+      }
+
+      if (!completedCodes.includes(code)) {
+        completedCodes.push(code);
+        localStorage.setItem("bg_completed_task_codes", JSON.stringify(completedCodes));
+      }
+
+      if (activeRitualState.isFirstRitual) {
+        localStorage.setItem("bg_first_ritual_completed", "true");
+      }
+
+      localStorage.removeItem("bg_active_ritual");
+      activeRitualState = null;
+      updateDevToolbarInfo();
+    }
+
+    function applyTaskToDOM(def) {
+      document.getElementById("task-intro-1").textContent = def.intro[0];
+      document.getElementById("task-intro-2").textContent = def.intro[1];
+      document.getElementById("task-intro-3").textContent = def.intro[2];
+
+      document.getElementById("task-ex-1").textContent = def.examples[0];
+      document.getElementById("task-ex-2").textContent = def.examples[1];
+      document.getElementById("task-ex-3").textContent = def.examples[2];
+
+      document.getElementById("task-closing").textContent = def.closing;
+    }
+
+    function restoreSavedStage(stage) {
+      if (stage === "TASK") {
+        startScreenReveal(2);
+      } else if (stage === "QUESTION") {
+        startScreenReveal(3);
+      } else if (stage === "WAITING") {
+        startScreenReveal(3);
+        showNotYetView();
+      } else if (stage === "CHOICE") {
+        startScreenReveal(4);
+      } else if (stage === "SEND_METHOD") {
+        goToSendMethodScreen();
+      } else if (stage === "UPLOAD_SELECT") {
+        goToUploadScreen();
+      } else {
+        startScreenReveal(1);
+      }
+    }
+
+    function handleNavigation(targetScreenNum) {
+      if (isSubmitting) return;
+
+      if (targetScreenNum === 2) {
+        activeRitualState.stage = "TASK";
+      } else if (targetScreenNum === 3) {
+        activeRitualState.stage = "QUESTION";
+      } else if (targetScreenNum === 4) {
+        activeRitualState.stage = "CHOICE";
+      }
+
+      saveActiveRitualState();
+      startScreenReveal(targetScreenNum);
+    }
+
+    function handleChoiceUpload() {
+      if (isSubmitting) return;
+      activeRitualState.stage = "UPLOAD_SELECT";
+      saveActiveRitualState();
+      goToUploadScreen();
+    }
+
+    function handleSendToMeChoice() {
+      if (isSubmitting) return;
+      activeRitualState.stage = "SEND_METHOD";
+      saveActiveRitualState();
+      goToSendMethodScreen();
+    }
+
+    function goToSendMethodScreen() {
+      document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+      const screen = document.getElementById("screen-send-method");
+      screen.classList.add("active");
+      currentScreenNum = "send-method";
+      updateDepthForScreen(4);
+
+      // Reset fallback state — show original intro + choices
+      const introEls = document.querySelectorAll("#inner-screen-send-method > .body-copy");
+      introEls.forEach(el => el.style.display = "");
+      const choicesEl = document.getElementById("send-method-choices");
+      if (choicesEl) choicesEl.style.display = "";
+      const fallbackEl = document.getElementById("whatsapp-fallback");
+      if (fallbackEl) fallbackEl.style.display = "none";
+
+      const units = Array.from(screen.querySelectorAll(".reveal-unit"));
+      units.forEach(u => u.classList.remove("revealed"));
+
+      let i = 0;
+      function stepSendMethod() {
+        if (i < units.length) {
+          units[i].classList.add("revealed");
+          i++;
+          setTimeout(stepSendMethod, 650);
+        }
+      }
+      stepSendMethod();
+    }
+
+    function handleSendViaUpload() {
+      if (isSubmitting) return;
+      activeRitualState.stage = "UPLOAD_SELECT";
+      saveActiveRitualState();
+      goToUploadScreen();
+    }
+
+    function handleSendViaWhatsApp() {
+      if (isSubmitting) return;
+
+      const whatsappNumber = "905054388917";
+      const whatsappText = "Bugünden bir kare. \uD83D\uDCF7";
+      const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappText)}`;
+
+      // Tactile button press delay, then navigate
+      const btn = document.getElementById("btn-whatsapp");
+      if (btn) btn.style.transform = "scale(0.96)";
+
+      setTimeout(() => {
+        if (btn) btn.style.transform = "";
+        navigateToWhatsApp(whatsappUrl);
+      }, 180);
+    }
+
+    function navigateToWhatsApp(url) {
+      // Set a fallback timer — if we're still on the page after 1.5s,
+      // WhatsApp likely didn't open
+      const fallbackTimer = setTimeout(() => {
+        showWhatsAppFallback();
+      }, 1500);
+
+      // Attempt navigation
+      window.location.href = url;
+    }
+
+    function showWhatsAppFallback() {
+      const choicesEl = document.getElementById("send-method-choices");
+      const introEls = document.querySelectorAll("#inner-screen-send-method > .body-copy");
+      const fallbackEl = document.getElementById("whatsapp-fallback");
+
+      // Hide the original intro and choices
+      if (choicesEl) choicesEl.style.display = "none";
+      introEls.forEach(el => { if (el !== fallbackEl.closest(".body-copy")) el.style.display = "none"; });
+
+      // Show fallback
+      fallbackEl.style.display = "block";
+
+      const units = Array.from(fallbackEl.querySelectorAll(".reveal-unit"));
+      units.forEach(u => u.classList.remove("revealed"));
+
+      let i = 0;
+      function stepFallback() {
+        if (i < units.length) {
+          units[i].classList.add("revealed");
+          i++;
+          setTimeout(stepFallback, 650);
+        }
+      }
+      stepFallback();
+    }
+
+    function retryWhatsApp() {
+      const whatsappNumber = "905054388917";
+      const whatsappText = "Bugünden bir kare. \uD83D\uDCF7";
+      const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappText)}`;
+      window.location.href = whatsappUrl;
+    }
+
+    // =========================================================================
+    // PROCEDURAL GENERATOR LOGIC (>10,000 COMBINATIONS)
+    // =========================================================================
+    function generateProceduralTask() {
+      let completedCodes = [];
+      try {
+        completedCodes = JSON.parse(localStorage.getItem("bg_completed_task_codes") || "[]");
+      } catch (e) {
+        completedCodes = [];
+      }
+
+      const familyKeys = Object.keys(TASK_FAMILIES);
+      // Shuffle family keys for variety
+      const shuffledFamilies = [...familyKeys].sort(() => Math.random() - 0.5);
+
+      for (const famKey of shuffledFamilies) {
+        const family = TASK_FAMILIES[famKey];
+        for (let i = 0; i < family.intros.length; i++) {
+          for (let e = 0; e < family.examples.length; e++) {
+            for (let c = 0; c < family.closings.length; c++) {
+              const code = `${family.code}-I${i + 1}-E${e + 1}-C${c + 1}`;
+              if (!completedCodes.includes(code)) {
+                return {
+                  isFirstRitual: false,
+                  taskCode: code,
+                  taskSummary: family.summary,
+                  intro: family.intros[i],
+                  examples: family.examples[e],
+                  closing: family.closings[c]
+                };
+              }
+            }
+          }
+        }
+      }
+
+      // Fallback if all 5,000+ combinations consumed: generate random combination
+      const randomFamKey = familyKeys[Math.floor(Math.random() * familyKeys.length)];
+      const fam = TASK_FAMILIES[randomFamKey];
+      const iIdx = Math.floor(Math.random() * fam.intros.length);
+      const eIdx = Math.floor(Math.random() * fam.examples.length);
+      const cIdx = Math.floor(Math.random() * fam.closings.length);
+      const randomCode = `${fam.code}-R-${Date.now().toString(36)}`;
+
+      return {
+        isFirstRitual: false,
+        taskCode: randomCode,
+        taskSummary: fam.summary,
+        intro: fam.intros[iIdx],
+        examples: fam.examples[eIdx],
+        closing: fam.closings[cIdx]
+      };
+    }
+
+    // =========================================================================
+    // 3D DEPTH SHIFT & REVEAL ENGINE
+    // =========================================================================
+    function updateDepthForScreen(screenNum) {
+      const capsule = document.getElementById("shape-capsule");
+      const pebble = document.getElementById("shape-pebble");
+      const halo = document.getElementById("shape-halo");
+
+      if (screenNum === 1) {
+        capsule.style.transform = "translate3d(0, 0, -80px) rotate(-14deg)";
+        pebble.style.transform = "translate3d(0, 0, 40px) rotate(16deg)";
+        halo.style.opacity = "0.55";
+      } else if (screenNum === 2) {
+        capsule.style.transform = "translate3d(30px, -40px, -60px) rotate(-20deg)";
+        pebble.style.transform = "translate3d(-40px, 30px, 60px) rotate(10deg)";
+        halo.style.opacity = "0.85";
+      } else if (screenNum === 3 || screenNum === 4) {
+        capsule.style.transform = "translate3d(-20px, 30px, -70px) rotate(-10deg)";
+        pebble.style.transform = "translate3d(30px, -20px, 30px) rotate(20deg)";
+        halo.style.opacity = "0.65";
+      } else if (screenNum === 5) {
+        capsule.style.transform = "translate3d(10px, -20px, -100px) rotate(-5deg)";
+        pebble.style.transform = "translate3d(-20px, 10px, 70px) rotate(24deg)";
+        halo.style.opacity = "0.9";
+      }
+    }
+
+    function startScreenReveal(screenNum) {
+      currentScreenNum = screenNum;
+      if (revealTimer) clearTimeout(revealTimer);
+
+      updateDepthForScreen(screenNum);
+
+      document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+      const targetScreen = document.getElementById(`screen-${screenNum}`);
+      if (!targetScreen) return;
+
+      targetScreen.classList.add("active");
+
+      revealUnits = Array.from(targetScreen.querySelectorAll(".reveal-unit"));
+      currentRevealIndex = 0;
+
+      revealUnits.forEach(u => {
+        u.classList.remove("revealed");
+        u.classList.remove("faded");
+      });
+
+      const buttons = targetScreen.querySelectorAll(".btn-centered");
+      buttons.forEach(b => b.classList.remove("revealed"));
+
+      if (screenNum === 2) {
+        runTaskRevealSequence();
+      } else {
+        stepRevealNextUnit();
+      }
+    }
+
+    function stepRevealNextUnit() {
+      if (currentRevealIndex < revealUnits.length) {
+        const unit = revealUnits[currentRevealIndex];
+        unit.classList.add("revealed");
+        currentRevealIndex++;
+
+        let delay = 650;
+        if (unit.dataset.delay) {
+          delay = parseInt(unit.dataset.delay, 10);
+        }
+
+        if (currentRevealIndex < revealUnits.length) {
+          revealTimer = setTimeout(stepRevealNextUnit, delay);
+        } else {
+          onAllUnitsRevealed();
+        }
+      } else {
+        onAllUnitsRevealed();
+      }
+    }
+
+    function accelerateReveal() {
+      if (currentRevealIndex < revealUnits.length) {
+        if (revealTimer) clearTimeout(revealTimer);
+        const unit = revealUnits[currentRevealIndex];
+        unit.classList.add("revealed");
+        currentRevealIndex++;
+
+        if (currentRevealIndex < revealUnits.length) {
+          revealTimer = setTimeout(stepRevealNextUnit, 300);
+        } else {
+          onAllUnitsRevealed();
+        }
+      }
+    }
+
+    function onAllUnitsRevealed() {
+      const activeScreen = document.getElementById(`screen-${currentScreenNum}`);
+      if (!activeScreen) return;
+
+      const buttons = activeScreen.querySelectorAll(".btn-centered");
+      buttons.forEach(b => b.classList.add("revealed"));
+    }
+
+    function runTaskRevealSequence() {
+      const screen2 = document.getElementById("screen-2");
+      const units = Array.from(screen2.querySelectorAll(".reveal-unit"));
+      const exampleUnits = Array.from(screen2.querySelectorAll(".example-item"));
+      const beatUnit = document.getElementById("beat-unit");
+      const btn = document.getElementById("btn-screen-2");
+
+      let idx = 0;
+
+      function revealNextTaskStep() {
+        if (idx < 3) {
+          units[idx].classList.add("revealed");
+          idx++;
+          revealTimer = setTimeout(revealNextTaskStep, 650);
+        } else if (idx < 6) {
+          units[idx].classList.add("revealed");
+          idx++;
+          if (idx < 6) {
+            revealTimer = setTimeout(revealNextTaskStep, 650);
+          } else {
+            revealTimer = setTimeout(() => {
+              exampleUnits.forEach(u => u.classList.add("faded"));
+              setTimeout(() => {
+                beatUnit.classList.add("revealed");
+                idx++;
+                setTimeout(() => {
+                  units[units.length - 1].classList.add("revealed");
+                  setTimeout(() => {
+                    btn.classList.add("revealed");
+                  }, 800);
+                }, 1100);
+              }, 400);
+            }, 1000);
+          }
+        }
+      }
+
+      revealNextTaskStep();
+    }
+
+    function showNotYetView() {
+      if (activeRitualState) {
+        activeRitualState.stage = "WAITING";
+        saveActiveRitualState();
+      }
+
+      document.getElementById("question-intro-view").style.display = "none";
+      const waitingView = document.getElementById("waiting-view");
+      waitingView.style.display = "flex";
+
+      const units = Array.from(waitingView.querySelectorAll(".reveal-unit"));
+      const btn = document.getElementById("btn-waiting-return");
+
+      units.forEach(u => u.classList.remove("revealed"));
+      btn.classList.remove("revealed");
+
+      let i = 0;
+      function stepWaiting() {
+        if (i < units.length) {
+          units[i].classList.add("revealed");
+          i++;
+          setTimeout(stepWaiting, 650);
+        } else {
+          btn.classList.add("revealed");
+        }
+      }
+      stepWaiting();
+    }
+
+    function resetNotYetView() {
+      if (activeRitualState) {
+        activeRitualState.stage = "QUESTION";
+        saveActiveRitualState();
+      }
+      document.getElementById("waiting-view").style.display = "none";
+      document.getElementById("question-intro-view").style.display = "block";
+      startScreenReveal(3);
+    }
+
+    function goToUploadScreen() {
+      document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+      const uploadScreen = document.getElementById("screen-upload");
+      uploadScreen.classList.add("active");
+      currentScreenNum = "upload";
+
+      const units = Array.from(uploadScreen.querySelectorAll(".reveal-unit"));
+      units.forEach(u => u.classList.remove("revealed"));
+
+      let i = 0;
+      function stepUpload() {
+        if (i < units.length) {
+          units[i].classList.add("revealed");
+          i++;
+          setTimeout(stepUpload, 600);
+        }
+      }
+      stepUpload();
+    }
+
+    function triggerFileSelect() {
+      document.getElementById("photo-file").click();
+    }
+
+    function handleFileSelected(input) {
+      const statusEl = document.getElementById("upload-status");
+      statusEl.className = "status-msg";
+      statusEl.textContent = "";
+
+      if (!input.files || !input.files[0]) return;
+      const file = input.files[0];
+
+      processImageClientSide(file);
+    }
+
+    function processImageClientSide(file) {
+      const statusEl = document.getElementById("upload-status");
+      statusEl.textContent = "Kare işleniyor...";
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          try {
+            const canvas = document.createElement("canvas");
+            let w = img.width;
+            let h = img.height;
+
+            const maxDim = 2560;
+            if (w > maxDim || h > maxDim) {
+              if (w > h) {
+                h = Math.round((h * maxDim) / w);
+                w = maxDim;
+              } else {
+                w = Math.round((w * maxDim) / h);
+                h = maxDim;
+              }
+            }
+
+            canvas.width = w;
+            canvas.height = h;
+
+            const ctx = canvas.getContext("2d");
+            ctx.drawImage(img, 0, 0, w, h);
+
+            canvas.toBlob((blob) => {
+              if (!blob) {
+                showUploadError();
+                return;
+              }
+
+              selectedFileBlob = blob;
+
+              const placeholder = document.getElementById("photo-placeholder");
+              const previewImg = document.getElementById("preview-img");
+              const actions = document.getElementById("upload-actions");
+
+              placeholder.style.display = "none";
+              previewImg.src = URL.createObjectURL(blob);
+              previewImg.style.display = "block";
+              actions.style.display = "flex";
+              statusEl.textContent = "";
+
+              const btns = actions.querySelectorAll(".btn-centered");
+              btns.forEach(b => b.classList.add("revealed"));
+            }, "image/jpeg", 0.86);
+          } catch (err) {
+            showUploadError();
+          }
+        };
+
+        img.onerror = () => showUploadError();
+        img.src = e.target.result;
+      };
+
+      reader.onerror = () => showUploadError();
+      reader.readAsDataURL(file);
+    }
+
+    function showUploadError() {
+      const statusEl = document.getElementById("upload-status");
+      statusEl.className = "status-msg error";
+      statusEl.textContent = "Bu fotoğrafı işleyemedim. Başka bir fotoğraf seçebilir misin?";
+    }
+
+    async function handleEventAction(actionType) {
+      if (isSubmitting) return;
+      isSubmitting = true;
+
+      const statusEl = document.getElementById("screen-4-status");
+      statusEl.className = "status-msg";
+      statusEl.textContent = "Gönderiliyor...";
+
+      const taskCode = activeRitualState?.taskCode || "ORIGINAL-FIRST-RITUAL";
+      const taskSummary = activeRitualState?.taskSummary || "Gözünün takıldığı bir şey";
+
+      try {
+        let resData = null;
+        if (isMock) {
+          await new Promise(r => setTimeout(r, 600));
+          resData = { ok: true };
+        } else {
+          const res = await fetch(`${CONFIG.API_BASE_URL}/event`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              experience: "bugunden-bir-kare",
+              action: actionType,
+              taskCode: taskCode,
+              taskSummary: taskSummary
+            })
+          });
+          resData = await res.json();
+        }
+
+        if (resData && resData.ok) {
+          markRitualCompleted();
+          showFeedbackSequence(actionType);
+        } else {
+          throw new Error(resData?.error || "network_error");
+        }
+      } catch (err) {
+        statusEl.className = "status-msg error";
+        statusEl.textContent = "Bir bağlantı sorunu oldu. Bir kez daha deneyebilir misin?";
+        isSubmitting = false;
+      }
+    }
+
+    async function submitPhoto() {
+      if (!selectedFileBlob || isSubmitting) return;
+      isSubmitting = true;
+
+      const statusEl = document.getElementById("upload-status");
+      statusEl.className = "status-msg";
+      statusEl.textContent = "Fotoğraf gönderiliyor...";
+
+      const taskCode = activeRitualState?.taskCode || "ORIGINAL-FIRST-RITUAL";
+      const taskSummary = activeRitualState?.taskSummary || "Gözünün takıldığı bir şey";
+
+      try {
+        let resData = null;
+        if (isMock) {
+          await new Promise(r => setTimeout(r, 800));
+          resData = { ok: true };
+        } else {
+          const formData = new FormData();
+          formData.append("photo", selectedFileBlob, "bugunden-bir-kare.jpg");
+          formData.append("experience", "bugunden-bir-kare");
+          formData.append("taskCode", taskCode);
+          formData.append("taskSummary", taskSummary);
+
+          const res = await fetch(`${CONFIG.API_BASE_URL}/photo`, {
+            method: "POST",
+            body: formData
+          });
+          resData = await res.json();
+        }
+
+        if (resData && resData.ok) {
+          markRitualCompleted();
+          showFeedbackSequence("upload");
+        } else {
+          throw new Error(resData?.error || "upload_failed");
+        }
+      } catch (err) {
+        statusEl.className = "status-msg error";
+        statusEl.textContent = "Bir bağlantı sorunu oldu. Bir kez daha deneyebilir misin?";
+        isSubmitting = false;
+      }
+    }
+
+    function showFeedbackSequence(actionType) {
+      document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+      const feedbackScreen = document.getElementById("screen-feedback");
+      const container = document.getElementById("feedback-copy-container");
+
+      feedbackScreen.classList.add("active");
+
+      let html = "";
+      if (actionType === "upload") {
+        html = `<h2 class="reveal-unit display-title">Kare ulaştı.</h2><p class="reveal-unit" style="margin-top: 14px;">Teşekkür ederim.</p>`;
+      } else if (actionType === "send_to_me") {
+        html = `<h2 class="reveal-unit display-title">Tamam.</h2><p class="reveal-unit" style="margin-top: 14px;">Açıklamana bile gerek yok.</p><p class="reveal-unit">Fotoğraf yeter.</p>`;
+      } else if (actionType === "keep_private") {
+        html = `<h2 class="reveal-unit display-title">Güzel seçim.</h2><p class="reveal-unit" style="margin-top: 14px;">Her güzel şeyin</p><p class="reveal-unit">paylaşılması gerekmiyor.</p>`;
+      }
+
+      container.innerHTML = html;
+      const units = Array.from(container.querySelectorAll(".reveal-unit"));
+
+      let idx = 0;
+      function stepFeedback() {
+        if (idx < units.length) {
+          units[idx].classList.add("revealed");
+          idx++;
+          setTimeout(stepFeedback, 750);
+        } else {
+          setTimeout(() => {
+            runDarkCinematicInterruption();
+          }, 1400);
+        }
+      }
+
+      stepFeedback();
+    }
+
+    function runDarkCinematicInterruption() {
+      document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+      const cinematicScreen = document.getElementById("screen-cinematic");
+      const unit1 = document.getElementById("cinematic-unit-1");
+      const unit2 = document.getElementById("cinematic-unit-2");
+
+      cinematicScreen.classList.add("active");
+      unit1.classList.remove("revealed");
+      unit2.classList.remove("revealed");
+
+      setTimeout(() => {
+        unit1.classList.add("revealed");
+        setTimeout(() => {
+          unit2.classList.add("revealed");
+          setTimeout(() => {
+            cinematicScreen.classList.remove("active");
+            runLightFinalSequence();
+          }, 1400);
+        }, 650);
+      }, 300);
+    }
+
+    function runLightFinalSequence() {
+      const finalScreen = document.getElementById("screen-final");
+      finalScreen.classList.add("active");
+      updateDepthForScreen(5);
+
+      const seqContainer = document.getElementById("final-seq-container");
+      const endContainer = document.getElementById("final-end-container");
+
+      seqContainer.style.display = "block";
+      endContainer.style.display = "none";
+
+      const units = Array.from(seqContainer.querySelectorAll(".reveal-unit"));
+      units.forEach(u => u.classList.remove("revealed"));
+
+      let idx = 0;
+      function stepFinalSeq() {
+        if (idx < units.length) {
+          units[idx].classList.add("revealed");
+          idx++;
+          setTimeout(stepFinalSeq, 750);
+        } else {
+          setTimeout(() => {
+            seqContainer.style.display = "none";
+            endContainer.style.display = "flex";
+
+            setTimeout(() => {
+              runEpilogueSequence();
+            }, 3500);
+          }, 2400);
+        }
+      }
+
+      stepFinalSeq();
+    }
+
+    function runEpilogueSequence() {
+      const epilogueContainer = document.getElementById("epilogue-container");
+      const epilogueLines = Array.from(epilogueContainer.querySelectorAll(".epilogue-line"));
+
+      let idx = 0;
+      function stepEpilogue() {
+        if (idx < epilogueLines.length) {
+          epilogueLines[idx].classList.add("revealed");
+          idx++;
+          setTimeout(stepEpilogue, 900);
+        }
+      }
+
+      stepEpilogue();
+    }
+
+    // =========================================================================
+    // DEVELOPER TOOLBAR UTILITY (Localhost Only)
+    // =========================================================================
+    function checkDevToolbar() {
+      const isLocalhost = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
+      const hasDevParam = new URLSearchParams(window.location.search).get("devTasks") === "1";
+
+      if (isLocalhost && hasDevParam) {
+        let bar = document.getElementById("dev-toolbar");
+        if (!bar) {
+          bar = document.createElement("div");
+          bar.id = "dev-toolbar";
+          bar.innerHTML = `
+            <span id="dev-info" style="font-weight: 600;">Task: -</span>
+            <button onclick="devGenerateNextTask()">Yeni Görev Üret</button>
+            <button onclick="devResetFirstRitual()">İlk Görevi Sıfırla</button>
+            <button onclick="devClearActiveRitual()">Aktif Görevi Temizle</button>
+          `;
+          document.body.appendChild(bar);
+        }
+      }
+    }
+
+    function updateDevToolbarInfo() {
+      const infoEl = document.getElementById("dev-info");
+      if (infoEl && activeRitualState) {
+        infoEl.textContent = `Task: ${activeRitualState.taskCode} (${activeRitualState.stage})`;
+      } else if (infoEl) {
+        infoEl.textContent = "Task: Completed";
+      }
+    }
+
+    function devGenerateNextTask() {
+      localStorage.setItem("bg_first_ritual_completed", "true");
+      localStorage.removeItem("bg_active_ritual");
+      initRitualState();
+    }
+
+    function devResetFirstRitual() {
+      localStorage.removeItem("bg_first_ritual_completed");
+      localStorage.removeItem("bg_active_ritual");
+      localStorage.removeItem("bg_completed_task_codes");
+      initRitualState();
+    }
+
+    function devClearActiveRitual() {
+      localStorage.removeItem("bg_active_ritual");
+      initRitualState();
+    }
+  </script>
+</body>
+</html>

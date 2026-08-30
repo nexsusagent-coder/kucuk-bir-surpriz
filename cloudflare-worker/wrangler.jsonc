@@ -1,0 +1,9 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "bugunden-bir-kare-api",
+  "main": "src/index.js",
+  "compatibility_date": "2024-09-01",
+  "vars": {
+    "ALLOWED_ORIGIN": "https://nexsusagent-coder.github.io"
+  }
+}
